@@ -40,8 +40,7 @@ export default function BUMNdanSwasta() {
         </TabsList>
 
         <TabsContent value="bpjs" className="mt-6">
-          <div className="rounded-lg  bg-background flex flex-row p-6 ">
-            <KecamatanCheckbox />
+          <div className="rounded-lg  bg-background p-6 ">
             <BpjsForm />
           </div>
         </TabsContent>

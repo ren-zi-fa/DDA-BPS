@@ -7,8 +7,8 @@ export function KecamatanCheckbox() {
 
   return (
     <div>
-      <Label className="mb-3 tracking-wider block text-green-500">
-        Data Kecamatan <br  /> Yang Sudah Diinputkan
+      <Label className="mb-3 tracking-wider block text-green-500  text-xs">
+        Data Kecamatan Yang Sudah Diinputkan otomatis terceklis
       </Label>
 
       <div className="flex flex-col gap-3">

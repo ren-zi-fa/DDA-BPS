@@ -5,7 +5,7 @@ import BpjsKelompokKecamatanStats from "./BpjsKelompokKecamatanStats";
 
 export default function BpjsForm() {
   return (
-    <div className="space-y-4 max-w-xl mx-auto">
+    <div className="space-y-4 mx-auto">
       <BpjsKecamatanStats />
       <BpjsKelompokKecamatanStats />
     </div>
