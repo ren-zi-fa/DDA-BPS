@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KecamatanSelect } from "@/components/common/SelectKecamatan";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { KecamatanCheckbox } from "@/components/common/ChecklistKecamatan";
 type Props = {
   kecamatanSubmitted: string[];
@@ -42,7 +42,7 @@ export default function BpjsKecamatanStats({ kecamatanSubmitted }: Props) {
   return (
     <>
       <div className="flex gap-3 flex-col md:flex-row border-2 space-x-2 rounded-sm p-4 ">
-        <KecamatanCheckbox />
+        <KecamatanCheckbox submittedItem={kecamatanSubmitted} />
         <div className="space-y-4 w-full">
           <p className="text-sm capitalize">Tabel 4.2.15</p>
           <div>

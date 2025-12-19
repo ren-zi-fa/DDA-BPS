@@ -1,8 +1,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { kecamatan as KECAMATAN } from "@/constant/menu";
-
-export function KecamatanCheckbox() {
+type Props = {
+  submittedItem?: string[];
+};
+export function KecamatanCheckbox({ submittedItem }: Props) {
   const toggleKecamatan = (label: string) => {};
 
   return (
@@ -17,6 +19,7 @@ export function KecamatanCheckbox() {
             <Checkbox
               disabled
               id={`kec-${kec.key}`}
+              checked={submittedItem?.includes(kec.label)}
               onCheckedChange={() => toggleKecamatan(kec.label)}
             />
             <Label htmlFor={`kec-${kec.key}`} className="cursor-pointer">

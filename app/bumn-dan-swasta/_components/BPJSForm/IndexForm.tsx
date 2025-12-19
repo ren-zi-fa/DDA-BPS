@@ -1,11 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import BpjsKecamatanStats from "./BpjsKecamatanStats";
 import BpjsKelompokKecamatanStats from "./BpjsKelompokKecamatanStats";
-type Props = {
-  kecamatanSubmitted: string[];
-};
-export default function IndexFormBPJS({ kecamatanSubmitted }: Props) {
+
+export default function IndexFormBPJS() {
+  const [kecamatanSubmitted, setKecamatanSubmitted] = useState<string[]>([]);
+  useEffect(() => {
+    const fetchKecamatanSubmitted = async () => {
+      const resp = await fetch("/api/bumn/bpjs_kecamatan", { method: "GET" });
+      const result = await resp.json();
+      setKecamatanSubmitted(result.data);
+    };
+    fetchKecamatanSubmitted();
+  }, []);
+
   return (
     <div className="space-y-4 mx-auto">
       <p>

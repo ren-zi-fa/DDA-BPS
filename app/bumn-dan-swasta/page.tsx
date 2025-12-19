@@ -7,15 +7,6 @@ import IndexFormIbnuSina from "./_components/IbnuSinaForm/IndexForm";
 import { useEffect, useState } from "react";
 
 export default function BUMNdanSwasta() {
-  const [kecamatanSubmitted, setKecamatanSubmitted] = useState<string[]>([]);
-  useEffect(() => {
-    const fetchKecamatanSubmitted = async () => {
-      const resp = await fetch("/api/bumn/bpjs_kecamatan", { method: "GET" });
-      const result = await resp.json();
-      setKecamatanSubmitted(result.data);
-    };
-    fetchKecamatanSubmitted();
-  }, []);
 
   const router = useRouter();
 
@@ -50,7 +41,7 @@ export default function BUMNdanSwasta() {
         </TabsList>
         <TabsContent value="bpjs" className="mt-6">
           <div className="rounded-lg  bg-background p-6 ">
-            <IndexFormBPJS kecamatanSubmitted={kecamatanSubmitted} />
+            <IndexFormBPJS  />
           </div>
         </TabsContent>
         <TabsContent value="rawat-jalan" className="mt-6">
