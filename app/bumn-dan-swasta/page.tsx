@@ -2,12 +2,12 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import IndexFormBPJS from "./_components/BPJSForm/IndexForm";
 import IndexFormIbnuSina from "./_components/IbnuSinaForm/IndexForm";
 import { useEffect, useState } from "react";
+import { Folder } from "lucide-react";
+import { FolderIconLink } from "@/components/common/FolderIconLink";
 
 export default function BUMNdanSwasta() {
-
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -40,9 +40,16 @@ export default function BUMNdanSwasta() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="bpjs" className="mt-6">
-          <div className="rounded-lg  bg-background p-6 ">
-            <IndexFormBPJS  />
-          </div>
+          <FolderIconLink
+            href="/bumn-dan-swasta/bpjs-kecamatan-stats"
+            label="bpjs-kecamatan"
+            popover="form bpjs kecamatan"
+          />
+          <FolderIconLink
+            href="bpjs-kelompok-kecamatan-stats"
+            label="bpjs-kelompok-kecamatan"
+            popover="form bpjs kelompok kkecamatan"
+          />
         </TabsContent>
         <TabsContent value="rawat-jalan" className="mt-6">
           <div className="rounded-lg  bg-background p-6 ">

@@ -5,8 +5,10 @@ import { Label } from "@/components/ui/label";
 import { KecamatanSelect } from "@/components/common/SelectKecamatan";
 import { useEffect, useState } from "react";
 import { KecamatanCheckbox } from "@/components/common/ChecklistKecamatan";
+import Link from "next/link";
+import {  MoveLeft } from "lucide-react";
 
-export default function BpjsKecamatanStats() {
+export default function page() {
   const [kecamatanSubmitted, setKecamatanSubmitted] = useState<string[]>([]);
   const fetchKecamatanSubmitted = async () => {
     const resp = await fetch("/api/bumn/bpjs_kecamatan");
@@ -49,12 +51,17 @@ export default function BpjsKecamatanStats() {
     });
   };
   return (
-    <>
-      <div className="flex gap-3 flex-col md:flex-row border-2 space-x-2 rounded-sm p-4 ">
+    <div className="mt-10">
+      <Button variant="ghost" size="icon" asChild>
+        <Link href="/bumn-dan-swasta">
+          <MoveLeft className="size-12" />
+        </Link>
+      </Button>
+      <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
         <KecamatanCheckbox submittedItem={kecamatanSubmitted} />
         <div className="space-y-4 w-full">
           <p className="text-sm text-red-700">
-             Tabel_Badan Penyelenggara Jaminan Sosial 
+            Tabel_Badan Penyelenggara Jaminan Sosial
           </p>
           <p className="text-sm capitalize">
             Tabel 4.2.15 Jumlah Peserta BPJS Kesehatan dan Rata-rata Iuran Per
@@ -104,6 +111,6 @@ export default function BpjsKecamatanStats() {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

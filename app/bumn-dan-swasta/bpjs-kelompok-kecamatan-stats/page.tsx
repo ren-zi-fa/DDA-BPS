@@ -6,7 +6,7 @@ import { KecamatanSelect } from "@/components/common/SelectKecamatan";
 import { useState } from "react";
 import { KecamatanCheckbox } from "@/components/common/ChecklistKecamatan";
 
-export default function BpjsKelompokKecamatanStats() {
+export default function page() {
   const [form, setForm] = useState({
     kecamatan: "",
     penerima_bantuan_iuran: 0,
