@@ -8,7 +8,7 @@ import { KecamatanCheckbox } from "@/components/common/ChecklistKecamatan";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 
-export default function page() {
+export default function Page() {
   const [kecamatanSubmitted, setKecamatanSubmitted] = useState<string[]>([]);
   const fetchKecamatanSubmitted = async () => {
     const resp = await fetch("/api/bumn/bpjs_kecamatan");

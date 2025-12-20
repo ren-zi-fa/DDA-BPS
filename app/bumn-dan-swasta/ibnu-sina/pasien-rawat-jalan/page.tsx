@@ -5,7 +5,7 @@ import { MoveLeft } from "lucide-react";
 import Form1 from "./_components/form1";
 import Form2 from "./_components/form2";
 
-export default function page() {
+export default function Page() {
   return (
     <div className="mt-10">
       <h1 className="text-xl text-center font-semibold">PASIEN RAWAT JALAN</h1>

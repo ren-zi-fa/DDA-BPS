@@ -9,7 +9,7 @@ import { MoveLeft } from "lucide-react";
 import { UraianCheckbox } from "@/components/common/ChecklistUraian";
 import { UraianSelect } from "@/components/common/selectUraian";
 
-export default function page() {
+export default function Page() {
   const [UraianSubmitted, setUraianSubmitted] = useState<string[]>([]);
   const fetchUraianSubmitted = async () => {
     const resp = await fetch("/api/bumn/ibnu-sina/rawat-inap");

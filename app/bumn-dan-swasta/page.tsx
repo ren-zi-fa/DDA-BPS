@@ -2,9 +2,6 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import IndexFormIbnuSina from "./_components/IbnuSinaForm/IndexForm";
-import { useEffect, useState } from "react";
-import { Folder } from "lucide-react";
 import { FolderIconLink } from "@/components/common/FolderIconLink";
 
 export default function BUMNdanSwasta() {
