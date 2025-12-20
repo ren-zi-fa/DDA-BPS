@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useKecamatanSubmitted(url: string) {
+export function useDataSubmitted(url: string) {
   const [data, setData] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 

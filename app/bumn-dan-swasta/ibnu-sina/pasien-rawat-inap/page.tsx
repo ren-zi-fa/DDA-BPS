@@ -3,22 +3,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
-import { UraianCheckbox } from "@/components/common/ChecklistUraian";
 import { UraianSelect } from "@/components/common/selectUraian";
+import { useDataSubmitted } from "@/hooks/useDataSubmitted";
+import { UraianCheckboxSection } from "@/components/common/loading/UraianCheckBoxSection";
 
 export default function Page() {
-  const [UraianSubmitted, setUraianSubmitted] = useState<string[]>([]);
-  const fetchUraianSubmitted = async () => {
-    const resp = await fetch("/api/bumn/ibnu-sina/rawat-inap");
-    const result = await resp.json();
-    setUraianSubmitted(result.data);
-  };
-  useEffect(() => {
-    fetchUraianSubmitted();
-  }, []);
+  const {
+    data: UraianSubmitted,
+    loading,
+    refetch,
+  } = useDataSubmitted("/api/bumn/ibnu-sina/rawat-inap");
   const [form, setForm] = useState({
     uraian: "",
     jumlah_pasien: "",
@@ -39,7 +36,7 @@ export default function Page() {
         hari_rawat: Number(form.hari_rawat),
       }),
     });
-    await fetchUraianSubmitted();
+    await refetch();
     setForm({
       uraian: "",
       jumlah_pasien: "",
@@ -57,7 +54,7 @@ export default function Page() {
           </Link>
         </Button>
         <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
-          <UraianCheckbox submittedItem={UraianSubmitted} />
+          <UraianCheckboxSection loading={loading} data={UraianSubmitted} />
           <div className="space-y-4">
             <p className="text-sm text-red-700">Tabel_Ibnu Sina Yarsi </p>
             <p className="text-sm capitalize">

@@ -6,15 +6,15 @@ import { KecamatanSelect } from "@/components/common/SelectKecamatan";
 import { useState } from "react";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
-import { useKecamatanSubmitted } from "@/hooks/useKecamatanSubmitted";
 import { KecamatanCheckboxSection } from "@/components/common/loading/KecamatanCheckBoxSection";
+import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 
 export default function Page() {
   const {
     data: kecamatanSubmitted,
     loading,
     refetch,
-  } = useKecamatanSubmitted("/api/bumn/bpjs_kecamatan");
+  } = useDataSubmitted("/api/bumn/bpjs_kecamatan");
 
   const [form, setForm] = useState({
     kecamatan: "",

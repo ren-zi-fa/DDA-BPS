@@ -2,21 +2,17 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
-import { BulanCheckbox } from "@/components/common/ChecklistBulan";
+import { useState } from "react";
 import { BulanSelect } from "@/components/common/SelectBulan";
+import { useDataSubmitted } from "@/hooks/useDataSubmitted";
+import { BulanCheckboxSection } from "@/components/common/loading/BulanCheckboxSection";
 
 export default function Form1() {
-  const [bulanSubmitted, setBulanSubmitted] = useState<string[]>([]);
-  const fetchBulanSubmitted = async () => {
-    const resp = await fetch("/api/bumn/ibnu-sina/ibnu-sina-rawat-jalan");
-    const result = await resp.json();
-    setBulanSubmitted(result.data);
-  };
-
-  useEffect(() => {
-    fetchBulanSubmitted();
-  }, []);
+  const {
+    data: bulanSubmitted,
+    loading,
+    refetch,
+  } = useDataSubmitted("/api/bumn/ibnu-sina/ibnu-sina-rawat-jalan");
   const [form, setForm] = useState({
     bulan: "",
     bedah: 0,
@@ -42,7 +38,7 @@ export default function Form1() {
         gigi: Number(form.gigi),
       }),
     });
-    await fetchBulanSubmitted();
+    await refetch();
     setForm({
       bulan: "",
       bedah: 0,
@@ -55,7 +51,7 @@ export default function Form1() {
   return (
     <>
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
-        <BulanCheckbox submittedItem={bulanSubmitted} />
+        <BulanCheckboxSection loading={loading} data={bulanSubmitted} />
         <div className="space-y-4">
           <p className="text-sm text-red-700">Tabel_Ibnu Sina Yarsi </p>
           <p className="text-sm capitalize">

@@ -16,7 +16,6 @@ export default function Page() {
       </Button>
       <Form1 />
       <Form2 />
-  
     </div>
   );
 }

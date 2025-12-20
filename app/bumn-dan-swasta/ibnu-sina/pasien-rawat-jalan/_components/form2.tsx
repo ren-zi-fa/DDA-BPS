@@ -2,23 +2,19 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BulanCheckbox } from "@/components/common/ChecklistBulan";
 import { BulanSelect } from "@/components/common/SelectBulan";
+import { useDataSubmitted } from "@/hooks/useDataSubmitted";
+import { BulanCheckboxSection } from "@/components/common/loading/BulanCheckboxSection";
 
 export default function Form2() {
-  const [bulanSubmitted, setBulanSubmitted] = useState<string[]>([]);
-  const fetchBulanSubmitted = async () => {
-    const resp = await fetch(
-      "/api/bumn/ibnu-sina/lanjutan-ibnu-sina-rawat-jalan"
-    );
-    const result = await resp.json();
-    setBulanSubmitted(result.data);
-  };
+  const {
+    data: bulanSubmitted,
+    loading,
+    refetch,
+  } = useDataSubmitted("/api/bumn/ibnu-sina/lanjutan-ibnu-sina-rawat-jalan");
 
-  useEffect(() => {
-    fetchBulanSubmitted();
-  }, []);
   const [form2, setForm2] = useState({
     bulan2: "",
     penyakit_dalam: 0,
@@ -47,7 +43,7 @@ export default function Form2() {
         fisioterapi: Number(form2.fisioterapi),
       }),
     });
-    await fetchBulanSubmitted();
+    await refetch();
     setForm2({
       bulan2: "",
       fisioterapi: 0,
@@ -61,7 +57,7 @@ export default function Form2() {
   return (
     <>
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
-        <BulanCheckbox submittedItem={bulanSubmitted} />
+        <BulanCheckboxSection loading={loading} data={bulanSubmitted} />
         <div className="space-y-4">
           <p className="text-sm text-red-700">Tabel_Ibnu Sina Yarsi </p>
           <p className="text-sm capitalize">Lanjutan Tabel 4.2.15</p>
