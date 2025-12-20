@@ -3,12 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KecamatanSelect } from "@/components/common/SelectKecamatan";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KecamatanCheckbox } from "@/components/common/ChecklistKecamatan";
-type Props = {
-  kecamatanSubmitted: string[];
-};
-export default function BpjsKecamatanStats({ kecamatanSubmitted }: Props) {
+
+export default function BpjsKecamatanStats() {
+  const [kecamatanSubmitted, setKecamatanSubmitted] = useState<string[]>([]);
+  const fetchKecamatanSubmitted = async () => {
+    const resp = await fetch("/api/bumn/bpjs_kecamatan");
+    const result = await resp.json();
+    setKecamatanSubmitted(result.data);
+  };
+
+  useEffect(() => {
+    fetchKecamatanSubmitted();
+  }, []);
+
   const [form, setForm] = useState({
     kecamatan: "",
     kelas1: "",
@@ -31,7 +40,7 @@ export default function BpjsKecamatanStats({ kecamatanSubmitted }: Props) {
         kelas3: Number(form.kelas3),
       }),
     });
-
+    await fetchKecamatanSubmitted();
     setForm({
       kecamatan: "",
       kelas1: "",
@@ -44,7 +53,13 @@ export default function BpjsKecamatanStats({ kecamatanSubmitted }: Props) {
       <div className="flex gap-3 flex-col md:flex-row border-2 space-x-2 rounded-sm p-4 ">
         <KecamatanCheckbox submittedItem={kecamatanSubmitted} />
         <div className="space-y-4 w-full">
-          <p className="text-sm capitalize">Tabel 4.2.15</p>
+          <p className="text-sm text-red-700">
+             Tabel_Badan Penyelenggara Jaminan Sosial 
+          </p>
+          <p className="text-sm capitalize">
+            Tabel 4.2.15 Jumlah Peserta BPJS Kesehatan dan Rata-rata Iuran Per
+            Peserta Menurut Kecamatan di Kabupaten Pasaman Barat, 2025
+          </p>
           <div>
             <KecamatanSelect
               submittedItem={kecamatanSubmitted}

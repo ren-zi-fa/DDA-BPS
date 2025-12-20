@@ -17,15 +17,20 @@ datasource db {
 
 model BpjsKecamatan {
   id          Int     @id @default(autoincrement())
-  tahun       Int
-
   kecamatan   String
-
   kelasI      Int
   kelasII     Int
   kelasIII    Int
-  jumlah      Int?
 
-  @@unique([tahun, kecamatan])
+  @@unique([kecamatan])
   @@map("bpjs_kecamatan")
+}
+model BpjsKelompokKecamatan {
+  id          Int     @id @default(autoincrement())
+  kecamatan   String
+  pbi         Int
+  non_pbi     Int
+  jumlah      Int
+  @@unique([kecamatan])
+  @@map("bpjs_kelompok_kecamatan")
 }
