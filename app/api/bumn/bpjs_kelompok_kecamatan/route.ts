@@ -3,17 +3,21 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const data = (await prisma.bpjsKecamatan.findMany()).map(
+    const data = (await prisma.bpjsKelompokKecamatan.findMany()).map(
       (item) => item.kecamatan
     );
-    return NextResponse.json({ message: "Data kecamatan ", data: data });
+    return NextResponse.json({
+      message: "Data kelompok kecamatan ",
+      data: data,
+    });
   } catch (error) {}
 }
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const { kecamatan, kelas1, kelas2, kelas3 } = body;
+    const { kecamatan, penerima_bantuan_iuran, bukan_penerima_bantuan_iuran } =
+      body;
 
     if (!kecamatan) {
       return NextResponse.json(
@@ -22,18 +26,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const kelasI = Number(kelas1);
-    const kelasII = Number(kelas2);
-    const kelasIII = Number(kelas3);
+    const pbi = penerima_bantuan_iuran;
+    const non_pbi = bukan_penerima_bantuan_iuran;
 
-    const jumlah = kelasI + kelasII + kelasIII;
+    const jumlah = pbi + non_pbi;
 
-    const data = await prisma.bpjsKecamatan.create({
+    const data = await prisma.bpjsKelompokKecamatan.create({
       data: {
         kecamatan,
-        kelasI,
-        kelasII,
-        kelasIII,
+        pbi,
+        non_pbi,
         jumlah,
       },
     });

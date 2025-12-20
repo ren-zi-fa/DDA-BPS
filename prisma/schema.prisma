@@ -21,7 +21,8 @@ model BpjsKecamatan {
   kelasI      Int
   kelasII     Int
   kelasIII    Int
-
+  jumlah Int
+  
   @@unique([kecamatan])
   @@map("bpjs_kecamatan")
 }

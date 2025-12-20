@@ -46,7 +46,7 @@ export default function BUMNdanSwasta() {
             popover="form bpjs kecamatan"
           />
           <FolderIconLink
-            href="bpjs-kelompok-kecamatan-stats"
+            href="/bumn-dan-swasta/bpjs-kelompok-kecamatan-stats"
             label="bpjs-kelompok-kecamatan"
             popover="form bpjs kelompok kkecamatan"
           />

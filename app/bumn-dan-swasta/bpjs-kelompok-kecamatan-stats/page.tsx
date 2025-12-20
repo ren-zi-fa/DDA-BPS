@@ -3,14 +3,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { KecamatanSelect } from "@/components/common/SelectKecamatan";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { KecamatanCheckbox } from "@/components/common/ChecklistKecamatan";
+import { MoveLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function page() {
+  const [kecamatanSubmitted, setKecamatanSubmitted] = useState<string[]>([]);
+  const fetchKecamatanSubmitted = async () => {
+    const resp = await fetch("/api/bumn/bpjs_kelompok_kecamatan");
+    const result = await resp.json();
+    setKecamatanSubmitted(result.data);
+  };
+
+  useEffect(() => {
+    fetchKecamatanSubmitted();
+  }, []);
   const [form, setForm] = useState({
     kecamatan: "",
     penerima_bantuan_iuran: 0,
-    bukan_penerima_bantuan_uran: 0,
+    bukan_penerima_bantuan_iuran: 0,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,32 +30,42 @@ export default function page() {
   };
 
   const handleSubmit = async () => {
-    // await fetch("", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     ...form,
-    //     kelas1: Number(form.kelas1),
-    //    bukan_penerima_bantuan_uran: Number(form.kelas2),
-    //     kelas3: Number(form.kelas3),
-    //     jumlah: Number(form.jumlah),
-    //   }),
-    // });
-
+    await fetch("/api/bumn/bpjs_kelompok_kecamatan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...form,
+        penerima_bantuan_iuran: Number(form.penerima_bantuan_iuran),
+        bukan_penerima_bantuan_iuran: Number(form.bukan_penerima_bantuan_iuran),
+      }),
+    });
+    await fetchKecamatanSubmitted();
     setForm({
       kecamatan: "",
       penerima_bantuan_iuran: 0,
-      bukan_penerima_bantuan_uran: 0,
+      bukan_penerima_bantuan_iuran: 0,
     });
   };
   return (
-    <>
-      <div className="flex gap-3 flex-col md:flex-row border-2 space-x-2 rounded-sm p-4 ">
-        <KecamatanCheckbox />
+    <div className="mt-10">
+      <Button variant="ghost" size="icon" asChild>
+        <Link href="/bumn-dan-swasta">
+          <MoveLeft className="size-12" />
+        </Link>
+      </Button>
+      <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
+        <KecamatanCheckbox submittedItem={kecamatanSubmitted} />
         <div className="space-y-4 w-full">
-          <p className="text-sm capitalize">4.2.16 </p>
+          <p className="text-sm text-red-700">
+            Tabel_Badan Penyelenggara Jaminan Sosial
+          </p>
+          <p className="text-sm capitalize">
+            Tabel 4.2.16 Jumlah Peserta BPJS Kesehatan Menurut Kelompok dan
+            Kecamatan di Kabupaten Pasaman Barat, 2024
+          </p>
           <div>
             <KecamatanSelect
+              submittedItem={kecamatanSubmitted}
               value={form.kecamatan}
               onChange={(val) =>
                 setForm((prev) => ({ ...prev, kecamatan: val }))
@@ -68,7 +90,7 @@ export default function page() {
               <Input
                 type="number"
                 name="bukan_penerima_bantuan_iuran"
-                value={form.bukan_penerima_bantuan_uran}
+                value={form.bukan_penerima_bantuan_iuran}
                 onChange={handleChange}
               />
             </div>
@@ -79,6 +101,6 @@ export default function page() {
           </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
