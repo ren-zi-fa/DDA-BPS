@@ -19,11 +19,11 @@ export default function Form1() {
   }, []);
   const [form, setForm] = useState({
     bulan: "",
-    bedah: "",
-    kesehatan_anak: "",
-    poli_kebidanan: "",
-    umum: "",
-    gigi: "",
+    bedah: 0,
+    kesehatan_anak: 0,
+    poli_kebidanan: 0,
+    umum: 0,
+    gigi: 0,
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -45,11 +45,11 @@ export default function Form1() {
     await fetchBulanSubmitted();
     setForm({
       bulan: "",
-      bedah: "",
-      gigi: "",
-      kesehatan_anak: "",
-      poli_kebidanan: "",
-      umum: "",
+      bedah: 0,
+      gigi: 0,
+      kesehatan_anak: 0,
+      poli_kebidanan: 0,
+      umum: 0,
     });
   };
   return (
