@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-
+import { Check, ChevronsUpDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -18,13 +17,12 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { bulan } from "@/constant/menu";
 
-export function BulanSelect({
-  value,
-  onChange,
-}: {
+type Props = {
   value: string;
   onChange: (val: string) => void;
-}) {
+  submittedItem?: string[];
+};
+export function BulanSelect({ value, submittedItem = [], onChange }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -38,36 +36,48 @@ export function BulanSelect({
             role="combobox"
             className="w-full justify-between"
           >
-            {value
-              ? bulan.find((k) => k.label === value)?.label
-              : "Pilih bulan"}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            {value || "Pilih Bulan"}
+            <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
 
         <PopoverContent className="w-full p-0">
           <Command>
-            <CommandInput placeholder="Cari bulan..." />
+            <CommandInput placeholder="Cari kecamatan..." />
             <CommandEmpty>Tidak ditemukan.</CommandEmpty>
+
             <CommandGroup>
-              {bulan.map((bln) => (
-                <CommandItem
-                  key={bln.key}
-                  value={bln.label}
-                  onSelect={(currentValue) => {
-                    onChange(currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
+              {bulan.map((bln) => {
+                const isSubmitted = submittedItem.includes(bln.label);
+
+                return (
+                  <CommandItem
+                    key={bln.key}
+                    value={bln.label}
+                    disabled={isSubmitted}
+                    onSelect={(val) => {
+                      if (isSubmitted) return;
+                      onChange(val);
+                      setOpen(false);
+                    }}
                     className={cn(
-                      "mr-2 h-4 w-4",
-                      value === bln.label ? "opacity-100" : "opacity-0"
+                      isSubmitted && "opacity-50 cursor-not-allowed"
                     )}
-                  />
-                  {bln.label}
-                </CommandItem>
-              ))}
+                  >
+                    {isSubmitted ? (
+                      <Check className="mr-2 h-4 w-4 text-green-500" />
+                    ) : (
+                      <X
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          value === bln.label ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    )}
+                    {bln.label}
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
           </Command>
         </PopoverContent>

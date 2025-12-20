@@ -22,7 +22,7 @@ model BpjsKecamatan {
   kelasII     Int
   kelasIII    Int
   jumlah Int
-  
+
   @@unique([kecamatan])
   @@map("bpjs_kecamatan")
 }
@@ -34,4 +34,27 @@ model BpjsKelompokKecamatan {
   jumlah      Int
   @@unique([kecamatan])
   @@map("bpjs_kelompok_kecamatan")
+}
+model IbnuSinaRawatJalan {
+  id             Int     @id @default(autoincrement())
+  bulan          String
+  bedah          Int
+  kesehatan_anak Int
+  poli_kebidanan Int
+  gigi           Int
+  umum           Int
+  @@unique([bulan])
+  @@map("ibnu_sina_rawat_jalan")
+}
+model LanjutanIbnuSinaRawatJalan {
+  id               Int     @id @default(autoincrement())
+  bulan            String
+  penyakit_dalam   Int
+  jiwa             Int
+  tht              Int
+  mata             Int
+  neurologi        Int
+  fisioterapi      Int
+  @@unique([bulan])
+  @@map("lanjutan_ibnu_sina_rawat_jalan")
 }

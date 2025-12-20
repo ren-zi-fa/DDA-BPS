@@ -5,8 +5,6 @@ type Props = {
   submittedItem?: string[];
 };
 export function KecamatanCheckbox({ submittedItem }: Props) {
-  const toggleKecamatan = (label: string) => {};
-
   return (
     <div>
       <Label className="mb-3 tracking-wider block text-green-500  text-xs">
@@ -20,7 +18,7 @@ export function KecamatanCheckbox({ submittedItem }: Props) {
               disabled
               id={`kec-${kec.key}`}
               checked={submittedItem?.includes(kec.label)}
-              onCheckedChange={() => toggleKecamatan(kec.label)}
+              
             />
             <Label htmlFor={`kec-${kec.key}`} className="cursor-pointer">
               {kec.label}

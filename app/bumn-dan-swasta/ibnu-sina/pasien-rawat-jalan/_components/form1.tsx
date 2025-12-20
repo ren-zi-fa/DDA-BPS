@@ -2,12 +2,21 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BulanCheckbox } from "@/components/common/ChecklistBulan";
 import { BulanSelect } from "@/components/common/SelectBulan";
 
-export default function PasienRawatInap() {
+export default function Form1() {
+  const [bulanSubmitted, setBulanSubmitted] = useState<string[]>([]);
+  const fetchBulanSubmitted = async () => {
+    const resp = await fetch("/api/bumn/ibnu-sina/ibnu-sina-rawat-jalan");
+    const result = await resp.json();
+    setBulanSubmitted(result.data);
+  };
+
+  useEffect(() => {
+    fetchBulanSubmitted();
+  }, []);
   const [form, setForm] = useState({
     bulan: "",
     bedah: "",
@@ -16,24 +25,24 @@ export default function PasienRawatInap() {
     umum: "",
     gigi: "",
   });
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
-    // await fetch("", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     ...form,
-    //     kelas1: Number(form.kelas1),
-    //     kelas2: Number(form.kelas2),
-    //     kelas3: Number(form.kelas3),
-    //     jumlah: Number(form.jumlah),
-    //   }),
-    // });
-
+    await fetch("/api/bumn/ibnu-sina/ibnu-sina-rawat-jalan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...form,
+        bedah: Number(form.bedah),
+        kesehatan_anak: Number(form.kesehatan_anak),
+        poli_kebidanan: Number(form.poli_kebidanan),
+        umum: Number(form.umum),
+        gigi: Number(form.gigi),
+      }),
+    });
+    await fetchBulanSubmitted();
     setForm({
       bulan: "",
       bedah: "",
@@ -43,19 +52,19 @@ export default function PasienRawatInap() {
       umum: "",
     });
   };
-
   return (
     <>
-      {/* Lanjutan Tabel 4.2.15 */}
-      <div className="flex gap-3 flex-col md:flex-row border-2 space-x-2 rounded-sm p-4 ">
-        <BulanCheckbox />
+      <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
+        <BulanCheckbox submittedItem={bulanSubmitted} />
         <div className="space-y-4">
+          <p className="text-sm text-red-700">Tabel_Ibnu Sina Yarsi </p>
           <p className="text-sm capitalize">
-            Jumlah Peserta BPJS Kesehatan dan Rata-rata Iuran Per Peserta
-            Menurut Kecamatan di Kabupaten Pasaman Barat,
+            Tabel 4.2.15 Banyaknya Pasien Rawat Jalan di RSI Ibnu Sina Simpang
+            Empat
           </p>
           <div>
             <BulanSelect
+              submittedItem={bulanSubmitted}
               value={form.bulan}
               onChange={(val) => setForm((prev) => ({ ...prev, bulan: val }))}
             />

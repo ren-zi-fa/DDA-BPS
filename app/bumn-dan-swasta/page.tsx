@@ -36,7 +36,7 @@ export default function BUMNdanSwasta() {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="bpjs">Penyelenggara BPJS</TabsTrigger>
           <TabsTrigger value="rawat-jalan">
-            Pasien Rawat Jalan Ibnu Sina
+            Ibnu Sina Yarsi
           </TabsTrigger>
         </TabsList>
         <TabsContent value="bpjs" className="mt-6">
@@ -52,9 +52,16 @@ export default function BUMNdanSwasta() {
           />
         </TabsContent>
         <TabsContent value="rawat-jalan" className="mt-6">
-          <div className="rounded-lg  bg-background p-6 ">
-            <IndexFormIbnuSina />
-          </div>
+          <FolderIconLink
+            href="/bumn-dan-swasta/ibnu-sina/pasien-rawat-jalan"
+            label="pasien-rawat-jalan"
+            popover="form bpjs pasien rawat jalan"
+          />
+          <FolderIconLink
+            href="/bumn-dan-swasta/ibnu-sina/pasien-rawat-inap"
+            label="pasien-rawat-inap"
+            popover="form bpjs pasien rawat inap"
+          />
         </TabsContent>
       </Tabs>
     </section>
