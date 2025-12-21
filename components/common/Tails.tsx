@@ -1,40 +1,61 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+
 const TilesComponent: React.FC<{
   className?: string;
+  tileSize?: number;
   rows?: number;
   cols?: number;
-}> = ({ className, rows: r, cols: c }) => {
-  const rows = new Array(r || 100).fill(1);
-  const cols = new Array(c || 10).fill(1);
+}> = ({ className, tileSize = 48, rows: fixedRows, cols: fixedCols }) => {
+  const [grid, setGrid] = useState({
+    rows: fixedRows || 0,
+    cols: fixedCols || 0,
+  });
+
+  useEffect(() => {
+    function calc() {
+      if (fixedRows && fixedCols) {
+        setGrid({ rows: fixedRows, cols: fixedCols });
+        return;
+      }
+
+      const cols = Math.ceil(window.innerWidth / tileSize) + 1;
+      const rows = Math.ceil(window.innerHeight / tileSize) + 1;
+      setGrid({ rows, cols });
+    }
+
+    calc();
+    window.addEventListener("resize", calc);
+    return () => window.removeEventListener("resize", calc);
+  }, [tileSize, fixedRows, fixedCols]);
+
+  const total = grid.rows * grid.cols;
 
   return (
     <div
       className={cn(
-        "relative z-0 flex w-full h-full justify-center",
+        "absolute inset-0 z-0 pointer-events-none grid overflow-hidden",
         className
       )}
+      style={{
+        gridTemplateColumns: `repeat(${grid.cols}, ${tileSize}px)`,
+        gridAutoRows: `${tileSize}px`,
+      }}
     >
-      {rows.map((_, i) => (
+      {Array.from({ length: total }).map((_, i) => (
         <motion.div
-          key={`row` + i}
-          className={`md:w-12 sm:h-12 w-9 h-9 border-l dark:border-neutral-900 border-neutral-200 relative`}
-        >
-          {cols.map((_, j) => (
-            <motion.div
-              whileHover={{
-                y: -10,
-                scale: 1.02,
-                backgroundColor: "var(--tile)",
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              key={`col` + j}
-              className="md:w-12 sm:h-12 w-9 h-9 border-r border-t dark:border-neutral-900 border-neutral-200 relative"
-              style={{ willChange: "transform, background-color" }}
-            />
-          ))}
-        </motion.div>
+          key={i}
+          whileHover={{ y: -10, scale: 1.02, backgroundColor: "var(--tile)" }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="border-r border-t dark:border-neutral-900 border-neutral-200"
+          style={{
+            width: tileSize,
+            height: tileSize,
+            willChange: "transform, background-color",
+          }}
+        />
       ))}
     </div>
   );

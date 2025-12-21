@@ -4,14 +4,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight } from "lucide-react";
 import { mainMenu } from "@/constant/menu";
 import Link from "next/link";
-import { Tiles } from "@/components/common/Tails";
 import { motion } from "framer-motion";
+import { Tiles } from "@/components/common/Tails";
 
 export default function Page() {
   return (
-    <div className="relative min-h-screen flex justify-center items-center overflow-hidden">
-      <Tiles className="absolute inset-0" />
+    <div className="relative min-h-screen flex flex-col justify-center items-center py-7 overflow-hidden">
+      <h1
+        className="font-extrabold uppercase tracking-widest
+ text-[clamp(3rem,10vw,4rem)]
+ bg-linear-to-r from-[#005BAC] via-[#00A859] to-[#F7941D]
+ bg-clip-text text-transparent"
+      >
+        DDA 2026
+      </h1>
 
+      <Tiles className="absolute inset-0 -z-10" />
       <div className="flex flex-col gap-6 z-10">
         {mainMenu.map((item) => (
           <CardMenu key={item.label} url={item.url} title={item.label} />
@@ -22,18 +30,33 @@ export default function Page() {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 0.12, y: 0 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 select-none"
+        className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 select-none "
       >
-        <div className="flex items-center gap-4">
-  
+        <div className="flex  items-center gap-2 sm:gap-3 lg:gap-4">
           <img
             src="/logo_bps.png"
             alt="Logo BPS"
-            width={64}
-            height={64}
-            className="opacity-80"
+            className="
+            w-8 h-8
+            sm:w-10 sm:h-10
+            md:w-12 md:h-12
+            lg:w-32 lg:h-32
+            opacity-90
+             "
           />
-          <span className="text-xl lg:text-5xl font-extrabold tracking-widest bg-linear-to-r from-[#005BAC] via-[#00A859] to-[#F7941D] bg-clip-text text-transparent">
+
+          <span
+            className="
+            font-extrabold tracking-widest
+            text-[10px]
+            sm:text-sm
+            md:text-lg
+            lg:text-5xl
+            leading-none
+            bg-linear-to-r from-[#005BAC] via-[#00A859] to-[#F7941D]
+            bg-clip-text text-transparent
+             "
+          >
             BPS PASAMAN BARAT
           </span>
         </div>
@@ -46,9 +69,9 @@ function CardMenu({ title, url }: { title: string; url: string }) {
   return (
     <div className="relative">
       <div className="absolute inset-0 rounded-xl " />
-      <Card className="relative z-10 w-90 rounded-xl bg-background">
+      <Card className="relative z-10 w-90  rounded-xl ">
         <Link href={url}>
-          <CardContent className="flex items-center gap-4 px-6 py-4">
+          <CardContent className="flex items-center gap-4 text-white px-6 py-4">
             <ChevronRight className="w-8 h-8 shrink-0" />
             <h1 className="text-lg font-medium">{title}</h1>
           </CardContent>
