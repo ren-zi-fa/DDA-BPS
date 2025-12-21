@@ -2,10 +2,10 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { FolderIconLink } from "@/components/common/FolderIconLink";
+import { FileIconLink } from "@/components/common/FileIconLink";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 
-export default function BUMNdanSwasta() {
+export default function BUMNdanSwastaPage() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -38,39 +38,37 @@ export default function BUMNdanSwasta() {
         </TabsList>
         <TabsContent value="bpjs" className="mt-6">
           <h1 className="my-4">Sheet :</h1>
-          <FolderIconLink
-            href="/bumn-dan-swasta/bpjs-kecamatan-stats"
-            label="bpjs-kecamatan"
-            popover="form bpjs kecamatan"
-          />
-          <FolderIconLink
-            href="/bumn-dan-swasta/bpjs-kelompok-kecamatan-stats"
-            label="bpjs-kelompok-kecamatan"
-            popover="form bpjs kelompok kkecamatan"
-          />
+          <div className="flex ">
+            <FileIconLink
+              href="/bumn-dan-swasta/bpjs-kecamatan-stats"
+              label="bpjs-kecamatan"
+            />
+            <FileIconLink
+              href="/bumn-dan-swasta/bpjs-kelompok-kecamatan-stats"
+              label="bpjs-kelompok-kecamatan"
+            />
+          </div>
         </TabsContent>
         <TabsContent value="ibnu-sina-yarsi" className="mt-6 space-x-5">
           <h1 className="my-4">Sheet :</h1>
-          <FolderIconLink
-            href="/bumn-dan-swasta/ibnu-sina/pasien-rawat-jalan"
-            label="pasien-rawat-jalan"
-            popover="form bpjs pasien rawat jalan"
-          />
-          <FolderIconLink
-            href="/bumn-dan-swasta/ibnu-sina/pasien-rawat-inap"
-            label="pasien-rawat-inap"
-            popover="form bpjs pasien rawat inap"
-          />
-          <FolderIconLink
-            href="/bumn-dan-swasta/ibnu-sina/fasilitas"
-            label="fasilitas"
-            popover="form jumlah fasilitas ibnu sina"
-          />
-          <FolderIconLink
-            href="/bumn-dan-swasta/ibnu-sina/kelahiran-kematian"
-            label="kelahiran dan kematian"
-            popover="form jumlah kelahiran dan kematian ibnu sina"
-          />
+          <div className="grid grid-cols-3 lg:grid-cols-5">
+            <FileIconLink
+              href="/bumn-dan-swasta/ibnu-sina/pasien-rawat-jalan"
+              label="pasien-rawat-jalan"
+            />
+            <FileIconLink
+              href="/bumn-dan-swasta/ibnu-sina/pasien-rawat-inap"
+              label="pasien-rawat-inap"
+            />
+            <FileIconLink
+              href="/bumn-dan-swasta/ibnu-sina/fasilitas"
+              label="fasilitas"
+            />
+            <FileIconLink
+              href="/bumn-dan-swasta/ibnu-sina/kelahiran-kematian"
+              label="kelahiran dan kematian"
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </section>
