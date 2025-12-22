@@ -60,4 +60,23 @@ const dataPasaman: InformasiKecamatanProps = {
   nama_kecamatan: "Pasaman",
   ketinggian_dari_permukaan_laut: "15-2.913 meter di atas permukaan laut",
 };
-export { dataRanahBatahan, dataPasaman, dataKotoBalingka, dataTalamau };
+const dataKinali: InformasiKecamatanProps = {
+  title: "Kinali",
+  luas_kecamatan: "482,64 km2",
+  batas_kecamatan: {
+    utara: "Kecamatan Luhak Nan Duo",
+    selatan: "Kecamatan III Nagari, Kab. Agam	",
+    barat: "Samudera Indonesia",
+    timur: "Kecamatan III Nagari",
+  },
+  nama_kecamatan: "Pasaman",
+  ketinggian_dari_permukaan_laut: "15-2.913 meter di atas permukaan laut",
+};
+export {
+  dataRanahBatahan,
+  dataKinali,
+  dataPasaman,
+  dataGunungTuleh,
+  dataKotoBalingka,
+  dataTalamau,
+};
