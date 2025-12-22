@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { InputForm } from "@/components/common/boilerplate/InputForm";
-import { dataPasaman, dataRanahBatahan } from "@/constant/informasi";
+import { dataPasaman } from "@/constant/informasi";
 
 const initialForm = {
   nama_kecamatan: dataPasaman.nama_kecamatan,
@@ -17,6 +17,8 @@ const initialForm = {
 export default function InformasikecamatanForm() {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [disabled, setDisable] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -40,25 +42,10 @@ export default function InformasikecamatanForm() {
       });
 
       const result = await res.json();
-
-      if (!res.ok) {
-        // contoh: 409 dari server
-        alert(result.message || "Gagal menyimpan data");
-        return;
+      if (result.message == "Berhasil disimpan") {
+        setMessage(result.message);
+        setDisable(true);
       }
-
-      alert("Data berhasil disimpan");
-
-      // reset hanya jika sukses
-      setForm({
-        nama_kecamatan: "",
-        batas_kecamatan_utara: "",
-        luas_kecamatan: "",
-        batas_kecamatan_selatan: "",
-        batas_kecamatan_barat: "",
-        batas_kecamatan_timur: "",
-        ketinggian_permukaan_laut: "",
-      });
     } catch (error) {
       alert("Terjadi kesalahan jaringan");
     } finally {
@@ -101,7 +88,9 @@ export default function InformasikecamatanForm() {
     <>
       <div className="flex flex-col w-full border-2 p-4 rounded-sm">
         <div className="space-y-4">
-          <p className="text-lg capitalize">Informasi Kecamatan</p>
+          <p className="text-lg capitalize">
+            Informasi Kecamatan <span className="text-green-600">{message}</span>
+          </p>
           <div className="">
             {formField.map((item) => (
               <InputForm
@@ -109,12 +98,17 @@ export default function InformasikecamatanForm() {
                 label={item.label}
                 type="text"
                 name={item.name}
+                disable={disabled}
                 onChange={handleChange}
                 value={form[item.name as keyof typeof form]}
               />
             ))}
           </div>
-          <Button onClick={handleSubmit} disabled={loading} className="w-full">
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className={`w-full ${disabled ? "bg-green-600" : "bg-black"}`}
+          >
             Simpan Data
           </Button>
         </div>

@@ -7,12 +7,14 @@ interface InputProps {
   value: string;
   label: string;
   type?: string;
+  disable?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 export function InputForm({
   name,
   value,
   label,
+  disable,
   type = "number",
   onChange,
 }: InputProps) {
@@ -22,6 +24,7 @@ export function InputForm({
         {label}
       </Label>
       <Input
+        disabled={disable}
         id={name}
         type={type}
         name={name}
