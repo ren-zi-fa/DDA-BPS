@@ -1,7 +1,11 @@
-export default function Page(){
-    return (
-        <>
-        <h1>Hello BUMN</h1>
-        </>
-    )
+import TabelDataPenyelenggara from "./_components/Tabel-Data-penyelenggara";
+
+export default function Page() {
+  return (
+    <>
+      <div className="w-xl">
+        <TabelDataPenyelenggara />
+      </div>
+    </>
+  );
 }
