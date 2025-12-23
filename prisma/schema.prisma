@@ -107,7 +107,8 @@ model Kecamatan {
   id   Int    @id @default(autoincrement())
   nama String @unique
 
-  data        InformasiKecamatan?
+  dataInformasi        InformasiKecamatan?
+  dataJumlah        JumlahJorongNagariKecamatan?
 }
 
 
@@ -123,6 +124,18 @@ model InformasiKecamatan {
   batas_selatan String
   batas_barat String
   batas_timur String
+}
+
+
+model JumlahJorongNagariKecamatan {
+  id Int @id @default(autoincrement())
+
+  kecamatanId Int @unique
+  kecamatan   Kecamatan @relation(fields: [kecamatanId], references: [id])
+
+  jumlah_jorong String
+  jumlah_nagari String
+  
 }
 
 

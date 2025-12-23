@@ -13,15 +13,7 @@ export async function POST(
       (item) => item.label.toLowerCase() === kecamatan.toLowerCase()
     );
     const body = await req.json();
-    const {
-      nama_kecamatan,
-      luas_kecamatan,
-      batas_kecamatan_utara,
-      batas_kecamatan_selatan,
-      batas_kecamatan_barat,
-      batas_kecamatan_timur,
-      ketinggian_permukaan_laut,
-    } = body;
+    const { nama_kecamatan, jumlah_nagari, jumlah_jorong } = body;
     if (!isValid) {
       return NextResponse.json(
         { message: "Kecamatan tidak valid" },
@@ -29,7 +21,6 @@ export async function POST(
       );
     }
     const result = await prisma.$transaction(async (tx) => {
-      // 1. upsert kecamatan
       const kecamatanData = await tx.kecamatan.upsert({
         where: { nama: nama_kecamatan },
         update: {},
@@ -38,7 +29,6 @@ export async function POST(
         },
       });
 
-      // 2. cek apakah informasi sudah ada
       const existingInfo = await tx.informasiKecamatan.findUnique({
         where: {
           kecamatanId: kecamatanData.id,
@@ -48,17 +38,11 @@ export async function POST(
       if (existingInfo) {
         throw new Error("DATA_SUDAH_ADA");
       }
-
-      // 3. simpan informasi kecamatan
-      const info = await tx.informasiKecamatan.create({
+      const info = await tx.jumlahJorongNagariKecamatan.create({
         data: {
           kecamatanId: kecamatanData.id,
-          luas_km2: luas_kecamatan,
-          ketinggian_dari_permukaan_laut: ketinggian_permukaan_laut,
-          batas_utara: batas_kecamatan_utara,
-          batas_selatan: batas_kecamatan_selatan,
-          batas_barat: batas_kecamatan_barat,
-          batas_timur: batas_kecamatan_timur,
+          jumlah_jorong: jumlah_jorong,
+          jumlah_nagari: jumlah_nagari,
         },
       });
 
@@ -115,7 +99,7 @@ export async function GET(
     return NextResponse.json(
       {
         message: "data kecamatan ada",
-        dataInformasi: kecamatanDB,
+        data: kecamatanDB,
       },
       { status: 200 }
     );

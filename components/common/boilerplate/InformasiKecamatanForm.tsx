@@ -1,20 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputForm } from "@/components/common/boilerplate/InputForm";
-import { dataPasaman } from "@/constant/informasi";
 
-const initialForm = {
-  nama_kecamatan: dataPasaman.nama_kecamatan,
-  luas_kecamatan: dataPasaman.luas_kecamatan,
-  batas_kecamatan_utara: dataPasaman.batas_kecamatan.utara,
-  batas_kecamatan_selatan: dataPasaman.batas_kecamatan.selatan,
-  batas_kecamatan_barat: dataPasaman.batas_kecamatan.barat,
-  batas_kecamatan_timur: dataPasaman.batas_kecamatan.timur,
-  ketinggian_permukaan_laut: dataPasaman.ketinggian_dari_permukaan_laut,
-};
+interface FormInterface {
+  initialForm: {
+    nama_kecamatan: string;
+    luas_kecamatan: string;
+    batas_kecamatan_utara: string;
+    batas_kecamatan_selatan: string;
+    batas_kecamatan_barat: string;
+    batas_kecamatan_timur: string;
+    ketinggian_permukaan_laut: string;
+  };
+  url: string;
+}
 
-export default function InformasikecamatanForm() {
+export default function InformasikecamatanForm({
+  initialForm,
+  url,
+}: FormInterface) {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -22,12 +27,59 @@ export default function InformasikecamatanForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+  const [kecamatan, setKecamatan] = useState<any>(null);
+  const [nama_kecamatan, setNama_Kecamatan] = useState<any>(null);
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(url);
+
+      if (!res.ok) {
+        setDisable(false);
+        setKecamatan(null);
+        return;
+      }
+
+      const json = await res.json();
+
+      if (json?.dataInformasi?.dataInformasi) {
+        setKecamatan(json.dataInformasi.dataInformasi);
+        setNama_Kecamatan(json.dataInformasi);
+        setDisable(true);
+      } else {
+        setKecamatan(null);
+        setDisable(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setDisable(false);
+      setKecamatan(null);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (!kecamatan) return;
+
+    setForm({
+      nama_kecamatan: nama_kecamatan.nama,
+      luas_kecamatan: kecamatan.luas_km2 ?? "",
+      batas_kecamatan_utara: kecamatan.batas_utara ?? "",
+      batas_kecamatan_selatan: kecamatan.batas_selatan ?? "",
+      batas_kecamatan_barat: kecamatan.batas_barat ?? "",
+      batas_kecamatan_timur: kecamatan.batas_timur ?? "",
+      ketinggian_permukaan_laut: kecamatan.ketinggian_dari_permukaan_laut ?? "",
+    });
+  }, [kecamatan]);
 
   const handleSubmit = async () => {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/kecamatan/pasaman", {
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -46,6 +98,7 @@ export default function InformasikecamatanForm() {
         setMessage(result.message);
         setDisable(true);
       }
+      await fetchData();
     } catch (error) {
       alert("Terjadi kesalahan jaringan");
     } finally {
@@ -89,7 +142,8 @@ export default function InformasikecamatanForm() {
       <div className="flex flex-col w-full border-2 p-4 rounded-sm">
         <div className="space-y-4">
           <p className="text-lg capitalize">
-            Informasi Kecamatan <span className="text-green-600">{message}</span>
+            Informasi Kecamatan
+            <span className="text-green-600">{message}</span>
           </p>
           <div className="">
             {formField.map((item) => (
@@ -106,10 +160,10 @@ export default function InformasikecamatanForm() {
           </div>
           <Button
             onClick={handleSubmit}
-            disabled={loading}
+            disabled={loading || disabled}
             className={`w-full ${disabled ? "bg-green-600" : "bg-black"}`}
           >
-            Simpan Data
+            {disabled ? "Data Sudah Tersimpan" : "Simpan Data"}
           </Button>
         </div>
       </div>
