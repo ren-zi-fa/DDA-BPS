@@ -12,18 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { BpjsKelompokKecamatan } from "@/lib/generated/prisma/client";
+import { BpjsKecamatan, BpjsKelompokKecamatan } from "@/lib/generated/prisma/client";
 
-interface BpjsKecamatan {
-  id: number;
-  kecamatan: string;
-  kelasI: number;
-  kelasII: number;
-  kelasIII: number;
-  jumlah: number;
-}
-
-export default function TabelYarsi() {
+export default function BUMN() {
   const [dataKecamatan, setDataKecamatan] = useState<BpjsKecamatan[]>([]);
   const [dataKelompok, setDataKelompok] = useState<BpjsKelompokKecamatan[]>([]);
   const [loading, setLoading] = useState(true);

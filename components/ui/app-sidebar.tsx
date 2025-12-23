@@ -35,7 +35,7 @@ const data = {
     },
     {
       title: "BUMN dan SWASTA",
-      url: "/admin-bumn",
+      url: "/admin-bumn-swasta",
       icon: IconFolder,
     },
 
@@ -90,7 +90,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>

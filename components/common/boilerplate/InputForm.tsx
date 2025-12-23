@@ -8,10 +8,12 @@ interface InputProps {
   label: string;
   type?: string;
   disable?: boolean;
+  placeholder?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 export function InputForm({
   name,
+  placeholder,
   value,
   label,
   disable,
@@ -24,6 +26,7 @@ export function InputForm({
         {label}
       </Label>
       <Input
+        placeholder={placeholder}
         disabled={disable}
         id={name}
         type={type}

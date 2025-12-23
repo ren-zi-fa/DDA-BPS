@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const data = (await prisma.bpjsKecamatan.findMany()).map(
+    const data = (await prisma.infoKecamatan.findMany()).map(
       (item) => item.kecamatan
     );
     return NextResponse.json({ message: "Data kecamatan ", data: data });
@@ -14,7 +14,16 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const { kecamatan, kelas1, kelas2, kelas3 } = body;
+    const {
+      kecamatan,
+      luas_kecamatan,
+      batas_kecamatan_utara,
+      batas_kecamatan_selatan,
+      batas_kecamatan_barat,
+      batas_kecamatan_timur,
+      nama_camat,
+      ketinggian_mdl,
+    } = body;
 
     if (!kecamatan) {
       return NextResponse.json(
@@ -23,19 +32,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const kelasI = Number(kelas1);
-    const kelasII = Number(kelas2);
-    const kelasIII = Number(kelas3);
-
-    const jumlah = kelasI + kelasII + kelasIII;
-
-    const data = await prisma.bpjsKecamatan.create({
+    const data = await prisma.infoKecamatan.create({
       data: {
         kecamatan,
-        kelasI,
-        kelasII,
-        kelasIII,
-        jumlah,
+        batas_barat: batas_kecamatan_barat,
+        batas_selatan: batas_kecamatan_selatan,
+        batas_timur: batas_kecamatan_timur,
+        nama_camat: nama_camat,
+        batas_utara: batas_kecamatan_utara,
+        ketinggian_dari_permukaan_laut: ketinggian_mdl,
+        luas_kecamatan: luas_kecamatan,
       },
     });
 

@@ -7,17 +7,17 @@ import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { InputForm } from "@/components/common/boilerplate/InputForm";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 
-export default function Page() {
+export default function PageJumlahNagariJorong() {
   const {
     data: kecamatanSubmitted,
     loading,
     refetch,
-  } = useDataSubmitted("/api/bumn/bpjs_kelompok_kecamatan");
+  } = useDataSubmitted("/api/kecamatan/jumlah-nagari-jorong");
 
   const [form, setForm] = useState({
     kecamatan: "",
-    penerima_bantuan_iuran: "",
-    bukan_penerima_bantuan_iuran: "",
+    jumlah_nagari: "",
+    jumlah_jorong: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,45 +25,36 @@ export default function Page() {
   };
 
   const handleSubmit = async () => {
-    await fetch("/api/bumn/bpjs_kelompok_kecamatan", {
+    await fetch("/api/kecamatan/jumlah-nagari-jorong", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
-        penerima_bantuan_iuran: Number(form.penerima_bantuan_iuran),
-        bukan_penerima_bantuan_iuran: Number(form.bukan_penerima_bantuan_iuran),
+        jumlah_nagari: Number(form.jumlah_nagari),
+        jumlah_jorong: Number(form.jumlah_jorong),
       }),
     });
     await refetch();
     setForm({
       kecamatan: "",
-      penerima_bantuan_iuran: "",
-      bukan_penerima_bantuan_iuran: "",
+      jumlah_nagari: "",
+      jumlah_jorong: "",
     });
   };
-  const kelompokFields = [
-    { label: "Penerima Bantuan Iuran (PBI)", name: "penerima_bantuan_iuran" },
-    {
-      label: "  Bukan Penerima Bantuan Iuran (Non PBI)",
-      name: "bukan_penerima_bantuan_iuran",
-    },
+  const kelasFields = [
+    { label: "Jumlah Nagari", name: "jumlah_nagari" },
+    { label: "Jumlah Jorong", name: "jumlah_jorong" },
   ];
   return (
-    <div className="mt-10">
+    <div className="mt-10 w-xl mx-auto">
       <h1 className="text-xl text-center font-semibold">
-        BPJS KELOMPOK KECAMATAN
+        JUMLAH NAGARI DAN JORONG KECAMATAN
       </h1>
-      <ButtonBack linkUrl="/bumn-dan-swasta" />
+      <ButtonBack linkUrl="/kecamatan" />
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
         <KecamatanCheckboxSection loading={loading} data={kecamatanSubmitted} />
+
         <div className="space-y-4 w-full">
-          <p className="text-sm text-red-700">
-            Tabel_Badan Penyelenggara Jaminan Sosial
-          </p>
-          <p className="text-sm capitalize">
-            Tabel 4.2.16 Jumlah Peserta BPJS Kesehatan Menurut Kelompok dan
-            Kecamatan di Kabupaten Pasaman Barat, 2024
-          </p>
           <div>
             <KecamatanSelect
               submittedItem={kecamatanSubmitted}
@@ -74,14 +65,14 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col">
-            {kelompokFields.map((item) => (
+          <div className="grid grid-cols-3 gap-4">
+            {kelasFields.map((item) => (
               <InputForm
                 key={item.name}
                 label={item.label}
                 name={item.name}
-                onChange={handleChange}
                 value={form[item.name as keyof typeof form]}
+                onChange={handleChange}
               />
             ))}
           </div>

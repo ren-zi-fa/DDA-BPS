@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/command";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { wilayah } from "@/constant/data";
 
 type Nagari = {
   nama: string;

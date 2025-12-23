@@ -3,16 +3,12 @@ import { prisma } from "@/lib/db";
 
 export async function GET() {
   try {
-    const data = await prisma.lanjutanIbnuSinaRawatJalan.findMany({
+    const data = await prisma.ibnuSinaRawatInap.findMany({
       select: {
         id: true,
-        bulan: true,
-        fisioterapi: true,
-        jiwa: true,
-        mata: true,
-        neurologi: true,
-        penyakit_dalam: true,
-        tht: true,
+        hari_rawat:true,
+        jumlah_pasien:true,
+        uraian:true,
       },
     });
 
