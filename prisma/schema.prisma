@@ -103,23 +103,29 @@ model LanjutanKelahiranKematian {
 
 /* kecamatan form*/
 
-model Kecamatan {
+model InfoKecamatan {
   id Int @id @default(autoincrement())
 
   kecamatan String
-
-  luas_kecamatan Decimal @db.Decimal(8, 2) 
+  nama_camat String
+  luas_kecamatan String
   batas_utara  String
   batas_selatan String
   batas_barat  String
   batas_timur  String
   ketinggian_dari_permukaan_laut  String
 
+  @@unique([kecamatan])
+  @@map("info_kecamatan")
+}
+model JumlahNagariJorong {
+  id Int @id @default(autoincrement())
+
+  kecamatan String
   jumlah_nagari Int
   jumlah_jorong Int
-  nama_nagari String[]
-  nama_jorong String[]
 
   @@unique([kecamatan])
-  @@map("kecamatan")
+  @@map("jumlah_nagari_jorong")
 }
+
