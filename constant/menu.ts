@@ -121,58 +121,47 @@ const bulan = [
 const kecamatan: Kecamatan[] = [
   {
     key: 1,
-    luas_kecamatan: "",
     label: "Sungai Beremas",
   },
   {
     key: 2,
 
-    luas_kecamatan: "",
     label: "Ranah Batahan",
   },
   {
     key: 3,
-    luas_kecamatan: "",
     label: "Koto Balingka",
   },
   {
     key: 4,
-    luas_kecamatan: "",
     label: "Sungai Aur",
   },
   {
     key: 5,
-    luas_kecamatan: "",
     label: "Lembah Melintang",
   },
   {
     key: 6,
-    luas_kecamatan: "",
     label: "Gunung Tuleh",
   },
   {
     key: 7,
-    luas_kecamatan: "",
     label: "Talamau",
   },
   {
     key: 8,
-    luas_kecamatan: "",
     label: "Pasaman",
   },
   {
     key: 9,
-    luas_kecamatan: "",
     label: "Luhak Nan Duo",
   },
   {
     key: 10,
-    luas_kecamatan: "",
     label: "Sasak Ranah Pasisie",
   },
   {
     key: 11,
-    luas_kecamatan: "",
     label: "Kinali",
   },
 ];
