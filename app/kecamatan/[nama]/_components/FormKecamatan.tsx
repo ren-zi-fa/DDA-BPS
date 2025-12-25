@@ -9,10 +9,10 @@ export default function FormKecamatan({ nama_kec }: Iprops) {
   const data = wilayah.find(
     (data) => data.kecamatan.toLocaleLowerCase() == nama_kec
   );
-  console.log(data);
+
   return (
     <>
-      <h1>{nama_kec.toLocaleUpperCase()}</h1>
+      <h1 className="capitalize">{nama_kec}</h1>
       <div className="">
         <Input />
       </div>

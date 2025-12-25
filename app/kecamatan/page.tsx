@@ -2,7 +2,6 @@ import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import { FileIconLink } from "@/components/common/FileIconLink";
 import { kecamatan } from "@/constant/menu";
 
-
 export default function Page() {
   return (
     <div className="min-h-screen w-xl mx-auto my-10">

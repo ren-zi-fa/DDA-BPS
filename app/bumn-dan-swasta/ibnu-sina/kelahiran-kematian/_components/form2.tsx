@@ -1,10 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { BulanSelect } from "@/components/common/SelectBulan";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { BulanCheckboxSection } from "@/components/common/loading/BulanCheckboxSection";
-import { InputForm } from "@/components/common/boilerplate/InputForm";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   LanjutanKelahiranKematianForm,

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { SelectInput } from "@/components/common/SelectInput";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { UraianCheckboxSection } from "@/components/common/loading/UraianCheckBoxSection";
-import { InputForm } from "@/components/common/boilerplate/InputForm";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import { RawatInapForm, RawatInapSchema } from "@/schema";
 import { FormProvider, useForm } from "react-hook-form";

@@ -80,3 +80,14 @@ export const LanjutanKelahiranKematianSchema = z.object({
 export type LanjutanKelahiranKematianForm = z.infer<
   typeof LanjutanKelahiranKematianSchema
 >;
+export const KecamatanSchema = z.object({
+  nama_kecamatan: z.string(),
+  luas_kecamatan: z.string().min(1, "wajib diisi"),
+  batas_kec_utara: z.string().min(1, "wajib diisi"),
+  batas_kec_selatan: z.string().min(1, "wajib diisi"),
+  batas_kec_barat: z.string().min(1, "wajib diisi"),
+  batas_kec_timur: z.string().min(1, "wajib diisi"),
+  ketinggian_permukaan_laut: z.string().min(1, "wajib diisi"),
+});
+
+export type KecamatanForm = z.infer<typeof KecamatanSchema>;
