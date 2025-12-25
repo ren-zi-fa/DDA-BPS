@@ -22,23 +22,37 @@ import {
   CommandItem,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { kecamatan } from "@/constant/menu";
+
 import { FieldValues, UseFormReturn } from "react-hook-form";
 type Props<T extends FieldValues = any> = {
   form: UseFormReturn<T>;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   submittedItem: string[];
+  label: string;
+  name: string;
+  valueSelect: {
+    key: number;
+    label: string;
+  }[];
 };
 
-export function KecamatanSelect({ open, setOpen, form, submittedItem }: Props) {
+export function SelectInput({
+  name,
+  label,
+  open,
+  setOpen,
+  form,
+  valueSelect,
+  submittedItem,
+}: Props) {
   return (
     <FormField
       control={form.control}
-      name="kecamatan"
+      name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Kecamatan</FormLabel>
+          <FormLabel>{label}</FormLabel>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button
@@ -46,25 +60,25 @@ export function KecamatanSelect({ open, setOpen, form, submittedItem }: Props) {
                 role="combobox"
                 className="w-full justify-between"
               >
-                {field.value || "Pilih kecamatan"}
+                {field.value || `Pilih ${label}`}
                 <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-full p-0">
               <Command>
-                <CommandInput placeholder="Cari kecamatan..." />
+                <CommandInput placeholder={`Cari ${label}...`} />
                 <CommandEmpty>Tidak ditemukan</CommandEmpty>
                 <CommandGroup>
-                  {kecamatan.map((kec) => {
-                    const disabled = submittedItem.includes(kec.label);
+                  {valueSelect.map((item) => {
+                    const disabled = submittedItem.includes(item.label);
                     return (
                       <CommandItem
-                        key={kec.key}
-                        value={kec.label}
+                        key={item.key}
+                        value={item.label}
                         disabled={disabled}
                         onSelect={() => {
                           if (disabled) return;
-                          field.onChange(kec.label);
+                          field.onChange(item.label);
                           setOpen(false);
                         }}
                         className={cn(
@@ -77,13 +91,13 @@ export function KecamatanSelect({ open, setOpen, form, submittedItem }: Props) {
                           <X
                             className={cn(
                               "mr-2 h-4 w-4",
-                              form.getValues().kecamatan === kec.label
+                              form.getValues().defaultValues === item.label
                                 ? "opacity-100"
                                 : "opacity-0"
                             )}
                           />
                         )}
-                        {kec.label}
+                        {item.label}
                       </CommandItem>
                     );
                   })}

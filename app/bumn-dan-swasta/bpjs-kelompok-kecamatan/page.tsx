@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { KecamatanSelect } from "@/components/common/SelectKecamatan";
+
 import { useState } from "react";
 import { KecamatanCheckboxSection } from "@/components/common/loading/KecamatanCheckBoxSection";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
@@ -12,14 +12,13 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumericField } from "@/components/common/boilerplate/InputField";
+import { SelectInput } from "@/components/common/SelectInput";
+import { kecamatan } from "@/constant/menu";
 
+const URL = "/api/bumn-swasta/bpjs_kelompok_kecamatan";
 export default function Page() {
   const [open, setOpen] = useState(false);
-  const {
-    data: kecamatanSubmitted,
-    loading,
-    refetch,
-  } = useDataSubmitted("/api/bumn-swasta/bpjs_kelompok_kecamatan");
+  const { data: kecamatanSubmitted, loading, refetch } = useDataSubmitted(URL);
 
   const form = useForm<BPJSKelompokKecamatanForm>({
     resolver: zodResolver(BPJSKelompokKecamatanSchema),
@@ -37,7 +36,7 @@ export default function Page() {
       penerima_bantuan_iuran: data.penerima_bantuan_iuran,
     };
 
-    await fetch("/api/bumn-swasta/bpjs_kelompok_kecamatan", {
+    await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -69,7 +68,10 @@ export default function Page() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3"
               >
-                <KecamatanSelect
+                <SelectInput
+                  label="Kecamatan"
+                  name="kecamatan"
+                  valueSelect={kecamatan}
                   form={form}
                   open={open}
                   setOpen={setOpen}

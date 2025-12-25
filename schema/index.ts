@@ -43,6 +43,21 @@ export type LanjutanIbnuSinaRawatJalanForm = z.infer<
   typeof LanjutanIbnuSinaRawatJalanSchema
 >;
 
+export const RawatInapSchema = z.object({
+  uraian: z.string(),
+  jumlah_pasien: z.float64().min(0),
+  hari_rawat: z.float64().min(0),
+});
+
+export type RawatInapForm = z.infer<typeof RawatInapSchema>;
+export const KelahiranKematianSchema = z.object({
+  bulan: z.string(),
+  bersalin: z.float64().min(0),
+  keguguran: z.float64().min(0),
+});
+
+export type KelahiranKematianForm = z.infer<typeof KelahiranKematianSchema>;
+
 export const FasilitasIbnuSinaSchema = z.object({
   fasilitas: z.string(),
   dua_ribu_20: z.float64().min(0),
@@ -53,3 +68,15 @@ export const FasilitasIbnuSinaSchema = z.object({
 });
 
 export type FasilitasIbnuSinaForm = z.infer<typeof FasilitasIbnuSinaSchema>;
+
+export const LanjutanKelahiranKematianSchema = z.object({
+  bulan: z.string(),
+  hidup_laki_laki: z.float64().min(0),
+  hidup_perempuan: z.float64().min(0),
+  mati_laki_laki: z.float64().min(0),
+  mati_perempuan: z.float64().min(0),
+});
+
+export type LanjutanKelahiranKematianForm = z.infer<
+  typeof LanjutanKelahiranKematianSchema
+>;

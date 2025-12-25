@@ -1,53 +1,48 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { BulanSelect } from "@/components/common/SelectBulan";
+
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { BulanCheckboxSection } from "@/components/common/loading/BulanCheckboxSection";
-import { InputForm } from "@/components/common/boilerplate/InputForm";
+import { FormProvider, useForm } from "react-hook-form";
+import { KelahiranKematianForm, KelahiranKematianSchema } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SelectInput } from "@/components/common/SelectInput";
+import { bulan } from "@/constant/menu";
+import { useState } from "react";
+import { InputNumericField } from "@/components/common/boilerplate/InputField";
+import { Button } from "@/components/ui/button";
+
+const URL = "/api/bumn-swasta/ibnu-sina/kelahiran-kematian";
 
 export default function Form1() {
-  const {
-    data: bulanSubmitted,
-    loading,
-    refetch,
-  } = useDataSubmitted("/api/bumn-swasta/ibnu-sina/kelahiran-kematian");
-  const [form, setForm] = useState({
-    bulan: "",
-    bersalin: "",
-    keguguran: "",
-  });
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const [open, setOpen] = useState(false);
+  const { data: bulanSubmitted, loading, refetch } = useDataSubmitted(URL);
 
-  const handleSubmit = async () => {
-    await fetch("/api/bumn-swasta/ibnu-sina/kelahiran-kematian", {
+  const form = useForm<KelahiranKematianForm>({
+    resolver: zodResolver(KelahiranKematianSchema),
+    defaultValues: {
+      bulan: "",
+      keguguran: 0,
+      bersalin: 0,
+    },
+  });
+
+  const onSubmit = async (data: KelahiranKematianForm) => {
+    const payload = {
+      bulan: data.bulan,
+      keguguran: data.keguguran,
+      bersalin: data.bersalin,
+    };
+
+    await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        bersalin: Number(form.bersalin),
-        keguguran: Number(form.keguguran),
-      }),
+      body: JSON.stringify(payload),
     });
-    await refetch();
-    setForm({
-      bulan: "",
-      bersalin: "",
-      keguguran: "",
-    });
+
+    refetch();
+    form.reset();
   };
-  const formField = [
-    {
-      label: "Bersalin",
-      name: "bersalin",
-    },
-    {
-      label: "Keguguran",
-      name: "keguguran",
-    },
-  ];
+
   return (
     <>
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
@@ -56,30 +51,37 @@ export default function Form1() {
           <p className="text-sm text-red-700">Tabel_Ibnu Sina Yarsi </p>
           <p className="text-sm capitalize">
             Tabel 4.2.18 Banyaknya Kelahiran, Lahir Hidup, Lahir Mati &
-            Keguguran di RSI Ibnu Sina Simpang Empat 
+            Keguguran di RSI Ibnu Sina Simpang Empat
           </p>
-          <div>
-            <BulanSelect
-              submittedItem={bulanSubmitted}
-              value={form.bulan}
-              onChange={(val) => setForm((prev) => ({ ...prev, bulan: val }))}
-            />
-          </div>
-
-          <div className="grid grid-cols-3 gap-4">
-            {formField.map((item) => (
-              <InputForm
-                key={item.name}
-                label={item.label}
-                name={item.name}
-                onChange={handleChange}
-                value={form[item.name as keyof typeof form]}
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <SelectInput
+                label="Bulan"
+                name="bulan"
+                valueSelect={bulan}
+                form={form}
+                open={open}
+                setOpen={setOpen}
+                submittedItem={bulanSubmitted}
               />
-            ))}
-          </div>
-          <Button onClick={handleSubmit} className="w-full">
-            Simpan Data
-          </Button>
+
+              {[
+                { name: "bersalin" as const, label: "Bersalin" as const },
+                { name: "keguguran" as const, label: "Keguguran" as const },
+              ].map((field) => (
+                <InputNumericField
+                  key={field.name}
+                  form={form}
+                  name={field.name}
+                  label={field.label}
+                />
+              ))}
+
+              <Button type="submit" className="w-full">
+                Simpan Data
+              </Button>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </>

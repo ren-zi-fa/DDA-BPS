@@ -5,11 +5,12 @@ import { useState } from "react";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import { FasilitasCheckboxSection } from "@/components/common/loading/FasilitasCheckBoxSection";
-import { FasilitasSelect } from "@/components/common/SelectFasilitas";
 import { FasilitasIbnuSinaForm, FasilitasIbnuSinaSchema } from "@/schema";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputNumericField } from "@/components/common/boilerplate/InputField";
+import { SelectInput } from "@/components/common/SelectInput";
+import { fasilitas } from "@/constant/menu";
 
 const URL = "/api/bumn-swasta/ibnu-sina/fasilitas-ibnu-sina";
 export default function Page() {
@@ -72,7 +73,10 @@ export default function Page() {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-3"
                 >
-                  <FasilitasSelect
+                  <SelectInput
+                    label="Fasilitas"
+                    name="fasilitas"
+                    valueSelect={fasilitas}
                     form={form}
                     open={open}
                     setOpen={setOpen}

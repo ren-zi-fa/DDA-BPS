@@ -4,7 +4,7 @@ import Form2 from "./_components/form2";
 
 export default function Page() {
   return (
-    <div className="mt-10">
+    <div className="my-10">
       <h1 className="text-xl text-center font-semibold">DATA KELAHIRAN DAN KEMATIAN IBNU SINA YARSI</h1>
       <ButtonBack linkUrl="/bumn-dan-swasta?tab=ibnu-sina-yarsi" />
       <Form1 />

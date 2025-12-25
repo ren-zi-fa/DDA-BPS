@@ -8,8 +8,10 @@ import { BPJSKecamatanSchema, BpjsKecamatanForm } from "@/schema";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { KecamatanCheckboxSection } from "@/components/common/loading/KecamatanCheckBoxSection";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
-import { KecamatanSelect } from "@/components/common/SelectKecamatan";
+
 import { InputNumericField } from "@/components/common/boilerplate/InputField";
+import { SelectInput } from "@/components/common/SelectInput";
+import { kecamatan } from "@/constant/menu";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
@@ -68,7 +70,10 @@ export default function Page() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-3"
               >
-                <KecamatanSelect
+                <SelectInput
+                  label="Kecamatan"
+                  name="kecamatan"
+                  valueSelect={kecamatan}
                   form={form}
                   open={open}
                   setOpen={setOpen}

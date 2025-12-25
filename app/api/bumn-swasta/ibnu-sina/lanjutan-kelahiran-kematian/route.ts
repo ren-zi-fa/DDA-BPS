@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { LanjutanKelahiranKematianSchema } from "@/schema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -14,8 +15,7 @@ export async function GET() {
 }
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-
+    const body = LanjutanKelahiranKematianSchema.parse(await req.json());
     const {
       bulan,
       hidup_laki_laki,
