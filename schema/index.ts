@@ -80,14 +80,28 @@ export const LanjutanKelahiranKematianSchema = z.object({
 export type LanjutanKelahiranKematianForm = z.infer<
   typeof LanjutanKelahiranKematianSchema
 >;
+
+const NagariSchema = z.object({
+  nama_nagari: z.string().min(1),
+  kepala_nagari: z.string().min(1),
+});
+const JorongSchema = z.object({
+  nama_jorong: z.string().min(1),
+  kepala_jorong: z.string().min(1),
+});
 export const KecamatanSchema = z.object({
-  nama_kecamatan: z.string().min(1, "wajib diisi"),
+  nama_kecamatan: z.string().min(11, "wajib diisi"),
+  nama_camat: z.string().min(1, "wajib diisi"),
   luas_kecamatan: z.string().min(1, "wajib diisi"),
   batas_kec_utara: z.string().min(1, "wajib diisi"),
   batas_kec_selatan: z.string().min(1, "wajib diisi"),
   batas_kec_barat: z.string().min(1, "wajib diisi"),
   batas_kec_timur: z.string().min(1, "wajib diisi"),
   ketinggian_permukaan_laut: z.string().min(1, "wajib diisi"),
+  jmlh_nagari: z.number().min(1),
+  jmlh_jorong: z.number().min(1),
+  nagari: z.array(NagariSchema).min(1, "Minimal satu nagari"),
+  jorong: z.array(JorongSchema).min(1, "Minimal satu nagari"),
 });
 
 export type KecamatanForm = z.infer<typeof KecamatanSchema>;

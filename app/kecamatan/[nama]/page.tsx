@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { nama: string } }) {
   }
 
   return (
-    <div className="w-xl mx-auto mt-10">
+    <div className="w-5xl mx-auto mt-10 mb-30">
       <ButtonBack linkUrl="/kecamatan" />
       <FormKecamatan nama_kec={kecamatan.label} />
     </div>

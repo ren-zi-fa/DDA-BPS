@@ -129,6 +129,27 @@
   }
 }
 
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 19px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #085ff6; /* gray-400 */
+  border-radius: 14px;
+
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3eeea; /* gray-100 */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: inherit;
+  scrollbar-color: #f68903 #fcfbfa;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

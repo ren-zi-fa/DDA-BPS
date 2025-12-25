@@ -113,24 +113,20 @@ model InfoKecamatan {
   batas_selatan String
   batas_barat  String
   batas_timur  String
-  ketinggian_dari_permukaan_laut  String
+  ketinggian_dari_permukaan_laut String
+
+  kepalaNagari KepalaNagari?
 
   @@unique([kecamatan])
   @@map("info_kecamatan")
 }
-model JumlahNagariJorong {
+
+model KepalaNagari {
   id Int @id @default(autoincrement())
-
-  kecamatan String
-  jumlah_nagari Float
-  jumlah_jorong Float
-
-  @@unique([kecamatan])
-  @@map("jumlah_nagari_jorong")
+  nagari Json
+  kecamatanId Int @unique
+  kecamatan InfoKecamatan @relation(fields: [kecamatanId], references: [id], onDelete: Cascade)
 }
 
-model NamaKecamatan {
-  id    Int    @id
-  label String
-}
+
 

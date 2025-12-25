@@ -15,7 +15,7 @@ const uraian = [
 // talamau
 // pasaman
 // kinali
-type Jorong = {
+ type Jorong = {
   nama: string;
 };
 
@@ -24,7 +24,7 @@ type Nagari = {
   jorong: Jorong[];
 };
 
-type Wilayah = {
+export type Wilayah = {
   kecamatan: string;
   nagari: Nagari[];
 };
