@@ -5,62 +5,51 @@ import { BulanSelect } from "@/components/common/SelectBulan";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { BulanCheckboxSection } from "@/components/common/loading/BulanCheckboxSection";
 import { InputForm } from "@/components/common/boilerplate/InputForm";
-
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  LanjutanIbnuSinaRawatJalanForm,
+  LanjutanIbnuSinaRawatJalanSchema,
+} from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputNumericField } from "@/components/common/boilerplate/InputField";
+const URL = "/api/bumn-swasta/ibnu-sina/lanjutan-ibnu-sina-rawat-jalan";
 export default function Form2() {
-  const {
-    data: bulanSubmitted,
-    loading,
-    refetch,
-  } = useDataSubmitted("/api/bumn-swasta/ibnu-sina/lanjutan-ibnu-sina-rawat-jalan");
+  const { data: bulanSubmitted, loading, refetch } = useDataSubmitted(URL);
+  const [open, setOpen] = useState(false);
 
-  const [form2, setForm2] = useState({
-    bulan2: "",
-    penyakit_dalam: "",
-    jiwa: "",
-    tht: "",
-    mata: "",
-    neurologi: "",
-    fisioterapi: "",
+  const form = useForm<LanjutanIbnuSinaRawatJalanForm>({
+    resolver: zodResolver(LanjutanIbnuSinaRawatJalanSchema),
+    defaultValues: {
+      bulan: "",
+      fisioterapi: 0,
+      jiwa: 0,
+      mata: 0,
+      penyakit_dalam: 0,
+      tht: 0,
+      neurologi: 0,
+    },
   });
 
-  const handleChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm2({ ...form2, [e.target.name]: e.target.value });
-  };
+  const onSubmit = async (data: LanjutanIbnuSinaRawatJalanForm) => {
+    const payload = {
+      bulan: data.bulan,
+      fisioterapi: data.fisioterapi,
+      jiwa: data.jiwa,
+      mata: data.mata,
+      penyakit_dalam: data.penyakit_dalam,
+      tht: data.tht,
+      neurologi: data.neurologi,
+    };
 
-  const handleSubmit2 = async () => {
-    await fetch("/api/bumn-swasta/ibnu-sina/lanjutan-ibnu-sina-rawat-jalan", {
+    await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form2,
-        penyakit_dalam: Number(form2.penyakit_dalam),
-        jiwa: Number(form2.jiwa),
-        tht: Number(form2.tht),
-        mata: Number(form2.mata),
-        neurologi: Number(form2.neurologi),
-        fisioterapi: Number(form2.fisioterapi),
-      }),
+      body: JSON.stringify(payload),
     });
-    await refetch();
-    setForm2({
-      bulan2: "",
-      fisioterapi: "",
-      jiwa: "",
-      mata: "",
-      neurologi: "",
-      penyakit_dalam: "",
-      tht: "",
-    });
-  };
-  const form2field = [
-    { label: "Penyakit Dalam", name: "penyakit_dalam" },
-    { label: "Jiwa", name: "jiwa" },
-    { label: "THT", name: "tht" },
-    { label: "Mata", name: "mata" },
-    { label: "Neurologi", name: "neurologi" },
-    { label: "Fisioterapi", name: "fisioterapi" },
-  ];
 
+    refetch();
+    form.reset();
+  };
   return (
     <>
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
@@ -68,31 +57,43 @@ export default function Form2() {
         <div className="space-y-4">
           <p className="text-sm text-red-700">Tabel_Ibnu Sina Yarsi </p>
           <p className="text-sm capitalize">Lanjutan Tabel 4.2.15</p>
-          <div>
-            <BulanSelect
-              submittedItem={bulanSubmitted}
-              value={form2.bulan2}
-              onChange={(val) => setForm2((prev) => ({ ...prev, bulan2: val }))}
-            />
-          </div>
+          <FormProvider {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              <BulanSelect
+                form={form}
+                open={open}
+                setOpen={setOpen}
+                submittedItem={bulanSubmitted}
+              />
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  {
+                    name: "fisioterapi" as const,
+                    label: "Fisioterapi" as const,
+                  },
+                  { name: "jiwa" as const, label: "Jiwa" as const },
+                  { name: "mata" as const, label: "Mata" as const },
+                  {
+                    name: "penyakit_dalam" as const,
+                    label: "Penyakit Dalam" as const,
+                  },
+                  { name: "tht" as const, label: "THT" as const },
+                  { name: "neurologi" as const, label: "Neurologi" as const },
+                ].map((field) => (
+                  <InputNumericField
+                    key={field.name}
+                    form={form}
+                    name={field.name}
+                    label={field.label}
+                  />
+                ))}
+              </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            {form2field.map((item) => {
-              console.log(form2[item.name as keyof typeof form2]);
-              return (
-                <InputForm
-                  key={item.name}
-                  label={item.label}
-                  name={item.name}
-                  onChange={handleChange2}
-                  value={form2[item.name as keyof typeof form2]}
-                />
-              );
-            })}
-          </div>
-          <Button onClick={handleSubmit2} className="w-full">
-            Simpan Data
-          </Button>
+              <Button type="submit" className="w-full">
+                Simpan Data
+              </Button>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </>

@@ -3,61 +3,51 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
-import { InputForm } from "@/components/common/boilerplate/InputForm";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import { FasilitasCheckboxSection } from "@/components/common/loading/FasilitasCheckBoxSection";
 import { FasilitasSelect } from "@/components/common/SelectFasilitas";
+import { FasilitasIbnuSinaForm, FasilitasIbnuSinaSchema } from "@/schema";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { InputNumericField } from "@/components/common/boilerplate/InputField";
 
+const URL = "/api/bumn-swasta/ibnu-sina/fasilitas-ibnu-sina";
 export default function Page() {
-  const {
-    data: fasilitasSubmitted,
-    loading,
-    refetch,
-  } = useDataSubmitted("/apii/bumn-swasta/bnu-sina/fasilitas-ibnu-sina");
-  const [form, setForm] = useState({
-    dua_ribu_20: "",
-    dua_ribu_21: "",
-    dua_ribu_22: "",
-    dua_ribu_23: "",
-    dua_ribu_24: "",
-    fasilitas: "",
+  const [open, setOpen] = useState(false);
+  const { data: fasilitasSubmitted, loading, refetch } = useDataSubmitted(URL);
+
+  const form = useForm<FasilitasIbnuSinaForm>({
+    resolver: zodResolver(FasilitasIbnuSinaSchema),
+    defaultValues: {
+      fasilitas: "",
+      dua_ribu_20: 0,
+      dua_ribu_21: 0,
+      dua_ribu_22: 0,
+      dua_ribu_23: 0,
+      dua_ribu_24: 0,
+    },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const onSubmit = async (data: FasilitasIbnuSinaForm) => {
+    const payload = {
+      fasilitas: data.fasilitas,
+      dua_ribu_20: data.dua_ribu_20,
+      dua_ribu_21: data.dua_ribu_21,
+      dua_ribu_22: data.dua_ribu_22,
+      dua_ribu_23: data.dua_ribu_23,
+      dua_ribu_24: data.dua_ribu_24,
+    };
 
-  const handleSubmit = async () => {
-    await fetch("/api/bumn-swasta/ibnu-sina/fasilitas-ibnu-sina", {
+    await fetch(URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...form,
-        dua_ribu_20: Number(form.dua_ribu_20),
-        dua_ribu_21: Number(form.dua_ribu_21),
-        dua_ribu_22: Number(form.dua_ribu_22),
-        dua_ribu_23: Number(form.dua_ribu_23),
-        dua_ribu_24: Number(form.dua_ribu_24),
-      }),
+      body: JSON.stringify(payload),
     });
-    await refetch();
-    setForm({
-      dua_ribu_20: "",
-      dua_ribu_21: "",
-      dua_ribu_22: "",
-      dua_ribu_23: "",
-      dua_ribu_24: "",
-      fasilitas: "",
-    });
+
+    refetch();
+    form.reset();
   };
 
-  const dataPasienField = [
-    { label: "2020", name: "dua_ribu_20" },
-    { label: "2021", name: "dua_ribu_21" },
-    { label: "2022", name: "dua_ribu_22" },
-    { label: "2023", name: "dua_ribu_23" },
-    { label: "2024", name: "dua_ribu_24" },
-  ];
   return (
     <>
       <div className="mt-10">
@@ -77,29 +67,39 @@ export default function Page() {
               Empat, 2020-2024
             </p>
             <div>
-              <FasilitasSelect
-                submittedItem={fasilitasSubmitted}
-                value={form.fasilitas}
-                onChange={(val) =>
-                  setForm((prev) => ({ ...prev, fasilitas: val }))
-                }
-              />
-            </div>
+              <FormProvider {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-3"
+                >
+                  <FasilitasSelect
+                    form={form}
+                    open={open}
+                    setOpen={setOpen}
+                    submittedItem={fasilitasSubmitted}
+                  />
 
-            <div className="grid grid-cols-3 gap-4">
-              {dataPasienField.map((item) => (
-                <InputForm
-                  key={item.name}
-                  label={item.label}
-                  name={item.name}
-                  onChange={handleChange}
-                  value={form[item.name as keyof typeof form]}
-                />
-              ))}
+                  {[
+                    { name: "dua_ribu_20" as const, label: "2020" as const },
+                    { name: "dua_ribu_21" as const, label: "2021" as const },
+                    { name: "dua_ribu_22" as const, label: "2022" as const },
+                    { name: "dua_ribu_23" as const, label: "2023" as const },
+                    { name: "dua_ribu_24" as const, label: "2024" as const },
+                  ].map((field) => (
+                    <InputNumericField
+                      key={field.name}
+                      form={form}
+                      name={field.name}
+                      label={field.label}
+                    />
+                  ))}
+
+                  <Button type="submit" className="w-full">
+                    Simpan Data
+                  </Button>
+                </form>
+              </FormProvider>
             </div>
-            <Button onClick={handleSubmit} className="w-full">
-              Simpan Data
-            </Button>
           </div>
         </div>
       </div>

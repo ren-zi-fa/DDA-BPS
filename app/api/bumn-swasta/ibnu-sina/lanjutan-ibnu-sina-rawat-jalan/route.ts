@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { LanjutanIbnuSinaRawatJalanSchema } from "@/schema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
@@ -14,11 +15,11 @@ export async function GET() {
 }
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { bulan2, penyakit_dalam, jiwa, tht, mata, neurologi, fisioterapi } =
+    const body = LanjutanIbnuSinaRawatJalanSchema.parse(await req.json());
+    const { bulan, penyakit_dalam, jiwa, tht, mata, neurologi, fisioterapi } =
       body;
 
-    if (!bulan2) {
+    if (!bulan) {
       return NextResponse.json(
         { message: "bulan wajib diisi" },
         { status: 400 }
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     const data = await prisma.lanjutanIbnuSinaRawatJalan.create({
       data: {
-        bulan: bulan2,
+        bulan: bulan,
         penyakit_dalam: DTpenyakit_dalam,
         jiwa: DTjiwa,
         tht: DTtht,

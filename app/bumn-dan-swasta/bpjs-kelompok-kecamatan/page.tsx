@@ -4,7 +4,6 @@ import { KecamatanSelect } from "@/components/common/SelectKecamatan";
 import { useState } from "react";
 import { KecamatanCheckboxSection } from "@/components/common/loading/KecamatanCheckBoxSection";
 import { useDataSubmitted } from "@/hooks/useDataSubmitted";
-import { InputForm } from "@/components/common/boilerplate/InputForm";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import {
   BPJSKelompokKecamatanForm,
@@ -12,7 +11,7 @@ import {
 } from "@/schema";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { InputNumericField } from "@/components/common/boilerplate/InputNumericField";
+import { InputNumericField } from "@/components/common/boilerplate/InputField";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
@@ -53,7 +52,7 @@ export default function Page() {
       <h1 className="text-xl text-center font-semibold">
         BPJS KELOMPOK KECAMATAN
       </h1>
-      <ButtonBack linkUrl="/bumn-swasta-dan-swasta" />
+      <ButtonBack linkUrl="/bumn-dan-swasta" />
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
         <KecamatanCheckboxSection loading={loading} data={kecamatanSubmitted} />
         <div className="space-y-4 w-full">

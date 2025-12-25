@@ -9,7 +9,7 @@ import { useDataSubmitted } from "@/hooks/useDataSubmitted";
 import { KecamatanCheckboxSection } from "@/components/common/loading/KecamatanCheckBoxSection";
 import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import { KecamatanSelect } from "@/components/common/SelectKecamatan";
-import { InputNumericField } from "@/components/common/boilerplate/InputNumericField";
+import { InputNumericField } from "@/components/common/boilerplate/InputField";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
@@ -52,27 +52,43 @@ export default function Page() {
     <div className="mt-10">
       <h1 className="text-xl text-center font-semibold">BPJS KECAMATAN</h1>
       <ButtonBack linkUrl="/bumn-dan-swasta" />
-
       <div className="flex flex-col md:flex-row gap-3 border rounded-sm p-4 mt-20">
         <KecamatanCheckboxSection loading={loading} data={submittedItem} />
+        <div className="space-y-4 w-full">
+          <p className="text-sm text-red-700">
+            Tabel_Badan Penyelenggara Jaminan Sosial
+          </p>
+          <p className="text-sm capitalize">
+            Tabel 4.2.15 Jumlah Peserta BPJS Kesehatan dan Rata-rata Iuran Per
+            Peserta Menurut Kecamatan di Kabupaten Pasaman Barat
+          </p>
+          <div>
+            <FormProvider {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-3"
+              >
+                <KecamatanSelect
+                  form={form}
+                  open={open}
+                  setOpen={setOpen}
+                  submittedItem={submittedItem}
+                />
+                <InputNumericField form={form} label="kelas I" name="kelas1" />
+                <InputNumericField form={form} label="kelas II" name="kelas2" />
+                <InputNumericField
+                  form={form}
+                  label="kelas III"
+                  name="kelas3"
+                />
 
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-            <KecamatanSelect
-              form={form}
-              open={open}
-              setOpen={setOpen}
-              submittedItem={submittedItem}
-            />
-            <InputNumericField form={form} label="kelas I" name="kelas1" />
-            <InputNumericField form={form} label="kelas II" name="kelas2" />
-            <InputNumericField form={form} label="kelas III" name="kelas3" />
-
-            <Button type="submit" className="w-full">
-              Simpan Data
-            </Button>
-          </form>
-        </FormProvider>
+                <Button type="submit" className="w-full">
+                  Simpan Data
+                </Button>
+              </form>
+            </FormProvider>
+          </div>
+        </div>
       </div>
     </div>
   );
