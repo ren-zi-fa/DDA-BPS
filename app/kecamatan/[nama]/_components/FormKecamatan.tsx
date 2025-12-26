@@ -9,8 +9,6 @@ import { KecamatanForm, KecamatanSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { NagariFieldCompletion } from "./NagariField";
-import { wilayah } from "@/constant/data";
 import { fieldInformasiKecamatan, JmlhnagariFields } from "./fields";
 import {
   FormControl,
@@ -20,6 +18,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import NagariField from "./NagariField";
+import JorongField from "./JorongField";
 
 interface Iprops {
   nama_kec: string;
@@ -59,21 +59,6 @@ export default function FormKecamatan({ nama_kec }: Iprops) {
     form.reset();
   };
 
-  console.log(form.formState.errors);
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "nagari",
-  });
-
-  const {
-    fields: jorongFileds,
-    append: appendJorong,
-    remove: removeJorong,
-  } = useFieldArray({
-    control: form.control,
-    name: "jorong",
-  });
-
   return (
     <>
       <div className="flex flex-col">
@@ -94,7 +79,10 @@ export default function FormKecamatan({ nama_kec }: Iprops) {
         >
           <div className="">
             <FormProvider {...form}>
-              <form className="mx-auto space-y-6 bg-white p-6 rounded-xl shadow-sm">
+              <form
+                className="mx-auto space-y-6 bg-white p-6 rounded-xl shadow-sm"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
                 <section>
                   <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
                     Informasi Umum Kecamatan
@@ -127,133 +115,9 @@ export default function FormKecamatan({ nama_kec }: Iprops) {
                   </div>
                 </section>
                 {/* nagari */}
-                <section>
-                  <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
-                    Informasi Nama dan Kepala Nagari {nama_kec}
-                  </h2>
-                  <div className="grid grid-cols-1 gap-2 ">
-                    {fields.map((item, index) => (
-                      <div key={item.id} className="space-y-2 border p-4 ">
-                        <FormField
-                          control={form.control}
-                          name={`nagari.${index}.nama_nagari`}
-                          render={({ field }) => (
-                            <>
-                              <h1>{index + 1} </h1>
-                              <FormItem className="border-t pt-2">
-                                <FormLabel> Nama Nagari</FormLabel>
-                                <FormControl>
-                                  <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            </>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name={`nagari.${index}.kepala_nagari`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Kepala Nagari</FormLabel>
-                              <FormControl>
-                                <Input {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          onClick={() => remove(index)}
-                        >
-                          Hapus
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="bg-blue-600 hover:bg-blue-500 text-white"
-                      onClick={() =>
-                        append({
-                          nama_nagari: "",
-                          kepala_nagari: "",
-                        })
-                      }
-                    >
-                      + Tambah Nagari
-                    </Button>
-                  </div>
-                  {/* end nagari */}
-                </section>
+                <NagariField form={form} nama_kec={nama_kec} />
                 {/* jorong */}
-                <section>
-                  <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
-                    Informasi Nama dan Kepala Jorong {nama_kec}
-                  </h2>
-                  <div className="grid grid-cols-1 gap-2">
-                    {jorongFileds.map((item, index) => (
-                      <div key={item.id} className="space-y-2 border p-4 ">
-                        <FormField
-                          control={form.control}
-                          name={`jorong.${index}.nama_jorong`}
-                          render={({ field }) => (
-                            <>
-                              <h1>{index + 1} </h1>
-                              <FormItem className="border-t pt-2">
-                                <FormLabel>Nama Jorong</FormLabel>
-                                <FormControl>
-                                  <Input {...field} />
-                                </FormControl>
-                                <FormMessage />
-                              </FormItem>
-                            </>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
-                          name={`jorong.${index}.kepala_jorong`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Kepala Jorong</FormLabel>
-                              <FormControl>
-                                <Input {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <Button
-                          type="button"
-                          variant="destructive"
-                          onClick={() => removeJorong(index)}
-                        >
-                          Hapus
-                        </Button>
-                      </div>
-                    ))}
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="bg-green-600 hover:bg-green-500 text-white"
-                      onClick={() =>
-                        appendJorong({
-                          nama_jorong: "",
-                          kepala_jorong: "",
-                        })
-                      }
-                    >
-                      + Tambah Jorong
-                    </Button>
-                  </div>
-                </section>
+                <JorongField form={form} nama_kec={nama_kec} />
 
                 <Button type="submit" className="w-full">
                   Simpan Data
