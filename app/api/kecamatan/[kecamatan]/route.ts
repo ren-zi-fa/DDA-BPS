@@ -45,16 +45,17 @@ export async function POST(
     await prisma.infoKecamatan.create({
       data: {
         kecamatan: kecamatanParam,
-        nama_camat: nama_camat,
+        nama_camat,
         luas_kecamatan,
         batas_utara: batas_kec_utara,
         batas_selatan: batas_kec_selatan,
         batas_barat: batas_kec_barat,
         batas_timur: batas_kec_timur,
         ketinggian_dari_permukaan_laut: ketinggian_permukaan_laut,
-        jmlh_jorong: jmlh_jorong,
-        jmlh_nagari: jmlh_nagari,
+        jmlh_jorong,
+        jmlh_nagari,
 
+        // ===== relasi array =====
         nagari: {
           create: nagari.map((n) => ({
             nama: n.nama_nagari,
@@ -68,11 +69,65 @@ export async function POST(
             kepala_jorong: j.kepala_jorong,
           })),
         },
+
+        pasar: {
+          create: pasar.map((p) => ({
+            nama: p.nama,
+            hari: p.hari,
+          })),
+        },
+
+        // ===== relasi object tunggal =====
+        saranaPendidikan: {
+          create: {
+            jumlahTK: sarana_pendidikan.jumlahTK,
+            jumlahRA: sarana_pendidikan.jumlahRA,
+            jumlahSD: sarana_pendidikan.jumlahSD,
+            jumlahMI: sarana_pendidikan.jumlahMI,
+            jumlahSMP: sarana_pendidikan.jumlahSMP,
+            jumlahMTsn: sarana_pendidikan.jumlahMTsn,
+            jumlahSMA: sarana_pendidikan.jumlahSMA,
+            jumlahSMK: sarana_pendidikan.jumlahSMK,
+            jumlahMAN: sarana_pendidikan.jumlahMAN,
+          },
+        },
+
+        saranaPeribadatan: {
+          create: {
+            jumlahMesjid: sarana_peribadatan.jumlahMesjid,
+            jumlahMushala: sarana_peribadatan.jumlahMushala,
+            jumlahGerejaKatolik: sarana_peribadatan.jumlahGerejaKatolik,
+            jumlahGerejaProtestan: sarana_peribadatan.jumlahGerejaProtestan,
+            jumlahWihara: sarana_peribadatan.jumlahWihara,
+          },
+        },
+
+        saranaKesehatan: {
+          create: {
+            jumlahRumahSakit: sarana_kesehatan.jumlahRumahSakit,
+            jumlahRumahSakitBersalin: sarana_kesehatan.jumlahRumahSakitBersalin,
+            jumlahPoliklinikBalaiKesehatan:
+              sarana_kesehatan.jumlahPoliklinikBalaiKesehatan,
+            jumlahPuskesmasRawatInap: sarana_kesehatan.jumlahPuskesmasRawatInap,
+            jumlahPuskesmasTanpaRawatInap:
+              sarana_kesehatan.jumlahPuskesmasTanpaRawatInap,
+            jumlahPuskesmasPembantu: sarana_kesehatan.jumlahPuskesmasPembantu,
+            jumlahPolindes: sarana_kesehatan.jumlahPolindes,
+            jumlahPosyandu: sarana_kesehatan.jumlahPosyandu,
+            jumlahApotik: sarana_kesehatan.jumlahApotik,
+          },
+        },
+
+        giziBuruk: {
+          create: {
+            jumlah_gizi_buruk: gizi_buruk.jumlah_gizi_buruk,
+          },
+        },
       },
     });
 
     return NextResponse.json(
-      { message: "Data berhasil disimpan" },
+      { message: "Data berhasil disimpan", succes: true },
       { status: 201 }
     );
   } catch (error) {
@@ -85,7 +140,7 @@ export async function POST(
 
     console.error(error);
     return NextResponse.json(
-      { message: "Terjadi kesalahan server" },
+      { message: "Terjadi kesalahan server", succes: false },
       { status: 500 }
     );
   }

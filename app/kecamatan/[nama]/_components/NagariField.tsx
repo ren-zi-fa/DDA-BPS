@@ -50,7 +50,7 @@ export default function NagariField({ nama_kec, form }: FieldProps) {
                       .toLowerCase()
                       .includes((field.value ?? "").toLowerCase())
                   );
-            
+             
                   return (
                     <>
                       .
@@ -74,7 +74,7 @@ export default function NagariField({ nama_kec, form }: FieldProps) {
                         </FormControl>
 
                         {openIndex === index && filtered.length > 0 && (
-                          <ul className="absolute left-0 right-0 top-full mt-1 z-50 rounded-md border bg-white shadow-md max-h-40 overflow-y-auto">
+                          <ul className="absolute left-0 right-0 top-full mt-1 z-20 rounded-md border bg-white shadow-md max-h-40 overflow-y-auto">
                             {filtered.map((item) => (
                               <li
                                 key={item}

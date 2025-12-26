@@ -57,7 +57,7 @@ export const saranaPendidikanFields = [
 export const saranaPeribadatanFields = [
   { name: "jumlahMesjid", label: "Jumlah Mesjid" },
   { name: "jumlahMushala", label: "Jumlah Mushala" },
-  { name: "jumlahGerejaProtestan:", label: "Jumlah Gereja Protestan" },
+  { name: "jumlahGerejaProtestan", label: "Jumlah Gereja Protestan" },
   { name: "jumlahGerejaKatolik", label: "Jumlah Gereja Katolik" },
   { name: "jumlahWihara", label: "Jumlah Wihara" },
   

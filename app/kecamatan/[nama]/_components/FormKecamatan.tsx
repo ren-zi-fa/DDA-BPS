@@ -13,9 +13,25 @@ import {
   fieldInformasiKecamatan,
   JmlhnagariFields,
   saranaKesehatanFields,
+  saranaPendidikanFields,
+  saranaPeribadatanFields,
 } from "./fields";
 import NagariField from "./NagariField";
 import JorongField from "./JorongField";
+import PasarField from "./pasarField";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
 
 interface Iprops {
   nama_kec: string;
@@ -23,6 +39,8 @@ interface Iprops {
 
 const URL = "/api/kecamatan";
 export default function FormKecamatan({ nama_kec }: Iprops) {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const form = useForm<KecamatanForm>({
     resolver: zodResolver(KecamatanSchema),
     defaultValues: {
@@ -73,26 +91,54 @@ export default function FormKecamatan({ nama_kec }: Iprops) {
   });
 
   useFormPersistSession(form, `formKecamatan ${nama_kec}`);
-
   const onSubmit = async (data: KecamatanForm) => {
-    alert(data);
-    await fetch(`${URL}/${nama_kec}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    form.reset();
+    try {
+      setLoading(true);
+
+      const res = await fetch(`${URL}/${nama_kec}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result.message || "Terjadi kesalahan server");
+      }
+
+      setOpen(false);
+
+      toast.success(result.message || "Berhasil", {
+        className: "bg-green-600 text-white",
+        position: "top-center",
+      });
+
+      form.reset();
+    } catch (err: any) {
+      setOpen(false);
+      toast.error(err.message || "Gagal mengirim data", {
+        className: "bg-red-600 text-white",
+        position: "top-center",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
       <div className="flex flex-col">
-        <div className="sticky top-0 z-10 bg-white border-b px-6 py-4">
+        <div className="sticky top-0 z-30 bg-white border-b px-6 py-4">
           <h1 className="text-xl font-semibold capitalize text-slate-800">
             Input Data Kecamatan: {nama_kec}
           </h1>
           <p className="text-sm text-slate-500">
             Isi data secara berurutan. Semua kolom wajib diisi.
+          </p>
+          <p className="text-sm text-red-500">
+            Data Kecamatan Tidak Bisa Di Inputkan 2 x pada form yg sama, harap
+            hati hati
           </p>
         </div>
 
@@ -143,19 +189,104 @@ export default function FormKecamatan({ nama_kec }: Iprops) {
                 <NagariField form={form} nama_kec={nama_kec} />
                 {/* jorong */}
                 <JorongField form={form} nama_kec={nama_kec} />
-                {/* Sarana kesehatan  */}
-                {saranaKesehatanFields.map((item) => (
-                  <InputNumericField
-                    key={item.name}
-                    name={`sarana_kesehatan.${item.name}`}
-                    label={item.label}
-                    form={form}
-                  />
-                ))}
+                {/* Sarana Pendidikan  */}
+                <section>
+                  <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
+                    Informasi Jumlah Sarana Pendidikan {nama_kec}
+                  </h2>
+                  <div className="border rounded-sm space-y-4 p-4 shadow-sm">
+                    {saranaPendidikanFields.map((item) => (
+                      <InputNumericField
+                        key={item.name}
+                        name={`sarana_pendidikan.${item.name}`}
+                        label={item.label}
+                        form={form}
+                      />
+                    ))}
+                  </div>
+                </section>
 
-                <Button type="submit" className="w-full">
-                  Simpan Data
-                </Button>
+                {/* Sarana Kesehatan  */}
+                <section>
+                  <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
+                    Informasi Jumlah Sarana Kesehatan {nama_kec}
+                  </h2>
+                  <div className="border rounded-sm space-y-4 p-4 shadow-sm">
+                    {saranaKesehatanFields.map((item) => (
+                      <InputNumericField
+                        key={item.name}
+                        name={`sarana_kesehatan.${item.name}`}
+                        label={item.label}
+                        form={form}
+                      />
+                    ))}
+                  </div>
+                </section>
+                <section>
+                  <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
+                    Informasi Jumlah Gizi Buruk {nama_kec}
+                  </h2>
+                  <div className="border rounded-sm space-y-4 p-4 shadow-sm">
+                    <InputNumericField
+                      name="gizi_buruk.jumlah_gizi_buruk"
+                      label="Jumlah Gizi Buruk"
+                      form={form}
+                    />
+                  </div>
+                </section>
+                {/* Gizi Buruk */}
+
+                {/* Sarana Peribadatan  */}
+                <section>
+                  <h2 className="text-lg font-medium text-slate-700 border-b pb-2">
+                    Informasi Jumlah Peribadatan {nama_kec}
+                  </h2>
+                  <div className="border rounded-sm space-y-4 p-4 shadow-sm">
+                    {saranaPeribadatanFields.map((item) => (
+                      <InputNumericField
+                        key={item.name}
+                        name={`sarana_peribadatan.${item.name}`}
+                        label={item.label}
+                        form={form}
+                      />
+                    ))}
+                  </div>
+                </section>
+                {/* Pasar */}
+                <PasarField form={form} nama_kec={nama_kec} />
+                {/* end field */}
+                <AlertDialog open={open} onOpenChange={setOpen}>
+                  <AlertDialogTrigger asChild>
+                    <Button type="button" className="w-full">
+                      Simpan Data
+                    </Button>
+                  </AlertDialogTrigger>
+
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Konfirmasi Penyimpanan
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Data kecamatan <b>{nama_kec}</b> tidak bisa diinput dua
+                        kali. Pastikan semua data sudah benar.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                      <AlertDialogCancel disabled={loading}>
+                        Batal
+                      </AlertDialogCancel>
+
+                      <AlertDialogAction
+                        disabled={loading}
+                        onClick={form.handleSubmit(onSubmit)}
+                      >
+                        {loading ? "Menyimpan..." : "Ya, Simpan"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </form>
             </FormProvider>
           </div>

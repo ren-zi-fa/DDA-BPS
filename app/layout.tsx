@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,7 @@ export default function RootLayout({
       >
         {children}
 
-        <div className="fixed bottom-6 right-10 z-50">
+        <div className="sticky bottom-6 right-10 z-50">
           <Link
             href="/"
             className="
@@ -43,6 +44,7 @@ export default function RootLayout({
           >
             ~/
           </Link>
+          <Toaster />
         </div>
       </body>
     </html>
