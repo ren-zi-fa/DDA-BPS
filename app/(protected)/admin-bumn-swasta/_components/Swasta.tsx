@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import * as XLSX from "xlsx";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +17,7 @@ import RawatInap from "./RawatInap";
 import FasilitasTable from "./Fasilitas";
 import KelahiranKematianTable from "./KelahiranKematian";
 import LanjutanKelahiranKematianTable from "./LanjutanKelahiranKematian";
+import { exportToExcel, SheetData } from "@/helper/ExportExcel";
 
 export default function Swasta() {
   const [rawatJalan, setRawatJalan] = useState<IbnuSinaRawatJalan[]>([]);
@@ -37,16 +37,18 @@ export default function Swasta() {
       fetch("/api/dashboard/bumn-swasta/ibnu-sina-rawat-jalan").then((res) =>
         res.json()
       ),
-      fetch("/api/dashboard/bumn-swasta/lanjutan-ibnu-sina-rawat-jalan").then((res) =>
-        res.json()
+      fetch("/api/dashboard/bumn-swasta/lanjutan-ibnu-sina-rawat-jalan").then(
+        (res) => res.json()
       ),
       fetch("/api/dashboard/bumn-swasta/ibnu-sina-rawat-inap").then((res) =>
         res.json()
       ),
       fetch("/api/dashboard/bumn-swasta/fasilitas").then((res) => res.json()),
-      fetch("/api/dashboard/bumn-swasta/kelahiran-kematian").then((res) => res.json()),
-      fetch("/api/dashboard/bumn-swasta/lanjutan-kelahiran-kematian").then((res) =>
+      fetch("/api/dashboard/bumn-swasta/kelahiran-kematian").then((res) =>
         res.json()
+      ),
+      fetch("/api/dashboard/bumn-swasta/lanjutan-kelahiran-kematian").then(
+        (res) => res.json()
       ),
     ])
 
@@ -189,45 +191,4 @@ export default function Swasta() {
       </Button>
     </>
   );
-}
-
-export interface SheetData {
-  sheetName: string;
-  data: Record<string, any>[];
-  totalFields?: string[];
-}
-function exportToExcel(sheets: SheetData[], fileName: string) {
-  const workbook = XLSX.utils.book_new();
-
-  sheets.forEach((sheet) => {
-    const { sheetName, data, totalFields } = sheet;
-    const sheetData = [...data];
-
-    if (totalFields && totalFields.length > 0 && data.length > 0) {
-      const totalRow: Record<string, any> = {};
-
-      // hitung total kolom numerik
-      totalFields.forEach((key) => {
-        totalRow[key] = data.reduce(
-          (sum, row) => sum + (Number(row[key]) || 0),
-          0
-        );
-      });
-
-      // kolom label prioritas
-      const labelKeys = ["Bulan", "Uraian", "Fasilitas"];
-      const labelKey = labelKeys.find((key) => key in data[0]);
-
-      if (labelKey) {
-        totalRow[labelKey] = "Total";
-      }
-
-      sheetData.push(totalRow);
-    }
-
-    const ws = XLSX.utils.json_to_sheet(sheetData);
-    XLSX.utils.book_append_sheet(workbook, ws, sheetName);
-  });
-
-  XLSX.writeFile(workbook, fileName);
 }

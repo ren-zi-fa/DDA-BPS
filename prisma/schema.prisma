@@ -108,6 +108,7 @@ model LanjutanKelahiranKematian {
 }
 
 /* kecamatan form*/
+
 model InfoKecamatan {
   id        Int @id @default(autoincrement())
   kecamatan String @unique

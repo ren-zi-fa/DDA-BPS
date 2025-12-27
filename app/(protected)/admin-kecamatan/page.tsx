@@ -1,7 +1,10 @@
+import { kecamatan } from "@/constant/menu";
+import KecamatanList from "./_components/KecamatanList";
+
 export default function Page() {
   return (
     <>
-      <h1>Hello Kecamatan</h1>
+      <KecamatanList data={kecamatan} />
     </>
   );
 }

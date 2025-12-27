@@ -2,7 +2,7 @@ import ButtonBack from "@/components/common/boilerplate/ButtonBack";
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import FormKecamatan from "./_components/FormKecamatan";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 
 type Props = {
   params: Promise<{ nama: string }>;
